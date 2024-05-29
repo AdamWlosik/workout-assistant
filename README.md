@@ -95,4 +95,3 @@ wprowadznie korekty:
 - home.html nie działało z tut poprawione 
 - db.sqlite3 
 - ruff.toml
-- pre-commit nie działa
