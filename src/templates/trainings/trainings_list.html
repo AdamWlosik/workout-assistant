@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <h2>My Trainings</h2>
+  <a class="btn btn-main" href="{% url 'training_create' %}">Create New Training</a>
+  <ul>
+    {% for training in trainings %}
+      <li class="training-item">
+        <a class="btn btn-main" href="{% url 'training_detail' training.id %}">{{ training.name }}</a>
+        <a class="btn btn-second" href="{% url 'training_edit' training.id %}">Edit</a>
+        <a class="btn btn-second" href="{% url 'training_delete' training.id %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

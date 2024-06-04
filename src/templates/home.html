@@ -3,24 +3,21 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  <p>Welcome, {{ user.email }}!</p>
-<!--  <p><a href="{% url 'logout' %}">Log Out</a></p> wersja z tut-->
-  <form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-  </form>
-{% else %}
-  <p>You are not logged in</p>
-  <form action="{% url 'login' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Log In</button>
-  </form>
-<form action="{% url 'signup' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Sign Up</button>
-  </form>
-<!--  <a href="{% url 'login' %}">Log In</a> |-->
-<!--  <a href="{% url 'signup' %}">Sign Up</a>-->
-{% endif %}
+<div style="text-align: center;">
+  {% if user.is_authenticated %}
+    <p>Welcome, {{ user.email }}!</p>
+    <img src="https://media.tenor.com/WJrxtr--PCUAAAAi/workout-gym.gif" alt="Workout GIF">
+  <!--  <form action="{% url 'logout' %}" method="post">-->
+  <!--    {% csrf_token %}-->
+  <!--    <button type="submit">Log Out</button>-->
+  <!--    <a href="{% url 'profile_view' %}">Profile</a>-->
+  <!--    <a href="{% url 'trainings' %}">Trainings List</a>-->
+  <!--  </form>-->
+  {% else %}
+    <p>Welcome, to workout assistant app!</p>
+    <img src="https://media.tenor.com/WJrxtr--PCUAAAAi/workout-gym.gif" alt="Workout GIF">
+  <!--  <a href="{% url 'login' %}">Log In</a> |-->
+  <!--  <a href="{% url 'signup' %}">Sign Up</a>-->
+  {% endif %}
+ </div>
 {% endblock %}

@@ -81,6 +81,11 @@ user:
 - email: testuser@test.com
 - hasło: Pomidor123.
 
+
+### type checking class
+`if TYPE_CHECKING:
+    from django.forms import EmailField`
+
 ### ruff:
 uruchamianie:
 - `ruff check`
@@ -88,10 +93,34 @@ uruchamianie:
 wprowadznie korekty:
 - `check --fix`
 
+### makefile:
+
+instalacja makefile na linux
+- `sudo apt-get install make`
+
+utworzenie pliku makefile w folderze na którym najczesciej pracuje
+
+4 pierwsze linie zawsze default
+
+wcięcie tab nie 4 spacje
+
+### TODO my notes
+- poprawić informacje o wymagach hasła bo niewidoczne czarne na czarnym
+- dodać uzupełnianie profilu przy rejstracji
+
 
 # TODO
 
 29.05
-- home.html nie działało z tut poprawione 
-- db.sqlite3 
-- ruff.toml
+- home.html logout z użyciem post, login a href (get)
+- db.sqlite3 w settingsach wskazaliśmy miejsce na win zamist na wsl
+- ruff.toml ustawienia ruffa w puproject.toml
+
+05.06
+- users/managers.py pytanie o klase
+- users/test.py
+- users/models.py
+- users/views.py
+- trainings/models.py na razie dodalem TCH004 do ingnora bo bład sie powtarzał
+- czy moge mieć tak templates, nie w apkach
+- czy do makefile można dodać jakoś (dodawanie nazwy apki) python manage.py startapp ""

@@ -1,6 +1,0 @@
-line-length = 120
-exclude = ["migrations"] # TODO polecają wykluczć katalog migration gerenrowany przez django podczas migracji tak?
-lint.select = ["E", "F", "W", "C"] # E: Błędy (Errors) F: Błędy formatowania (Format Errors) W: Ostrzeżenia (Warnings) C: Style kodowania (Code Style)
-# ignore = [] # ingorowanie błędów po kodach np E501 (zbyt długa linia)
-# per-file-ignores = { "tests/test_*.py" = ["E501"] } # ignorowanie błędów w konkretnych plikach
-

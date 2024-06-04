@@ -1,0 +1,10 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <h2>Name: {{ training.name }}</h2>
+  <p>Description: {{ training.description }}</p>
+  <p>Category: {{ training.get_category_display }}</p>
+  <p>Exercises: {{ training.exercises }}</p>
+  <a class="btn btn-main" href="{% url 'training_edit' training.id %}">Edit</a>
+  <a class="btn btn-main" href="{% url 'trainings' %}">Back to list</a>
+{% endblock %}
