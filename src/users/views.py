@@ -1,14 +1,15 @@
+from typing import TYPE_CHECKING
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from platformdirs.version import TYPE_CHECKING
 
 from .forms import CustomUserCreationForm, ProfileForm
 from .models import Profile
 
 if TYPE_CHECKING:
-    from django.http import HttpResponse, HttpRequest  # noqa: I001
+    from django.http import HttpRequest, HttpResponse
 
 
 class SignUp(generic.CreateView):
@@ -18,10 +19,9 @@ class SignUp(generic.CreateView):
 
 
 @login_required
-def edit_profile(request: HttpRequest) -> HttpResponse:
+def edit_profile(request: "HttpRequest") -> "HttpResponse":
     user = request.user
-    profile, created = Profile.objects.get_or_create(user=user)
-    # TODO created chyba nie potrzebne bo i tak tylko dla zalogowanego użytkownika
+    profile, _ = Profile.objects.get_or_create(user=user)
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
@@ -35,6 +35,6 @@ def edit_profile(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def profile_view(request: HttpRequest) -> HttpResponse:
+def profile_view(request: "HttpRequest") -> "HttpResponse":
     profile, created = Profile.objects.get_or_create(user=request.user)
     return render(request, "users/profile_view.html", {"profile": profile})

@@ -2,7 +2,10 @@
 
 {% block content %}
   <h2>Profile</h2>
-  <div>
+  <div style="text-align: center;">
+    {% if profile.avatar %}
+      <p><strong></strong><br> <img src="{{ profile.avatar.url }}" alt="Avatar" style="max-width: 200px; max-height: 200px;"></p>
+    {% endif %}
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>First Name:</strong> {{ profile.first_name }}</p>
     <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
@@ -11,9 +14,6 @@
     <p><strong>Weight:</strong> {{ profile.weight }} kg</p>
     <p><strong>Height:</strong> {{ profile.height }} cm</p>
     <p><strong>BMI:</strong> {{ profile.bmi }}</p>
-    {% if profile.avatar %}
-      <p><strong>Avatar:</strong><br> <img src="{{ profile.avatar.url }}" alt="Avatar" style="max-width: 200px; max-height: 200px;"></p>
-    {% endif %}
+    <a class="btn btn-main" href="{% url 'edit_profile' %}">Edit Profile</a>
   </div>
-  <a class="btn btn-main" href="{% url 'edit_profile' %}">Edit Profile</a>
 {% endblock %}

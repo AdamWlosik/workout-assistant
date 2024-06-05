@@ -124,3 +124,12 @@ wcięcie tab nie 4 spacje
 - trainings/models.py na razie dodalem TCH004 do ingnora bo bład sie powtarzał
 - czy moge mieć tak templates, nie w apkach
 - czy do makefile można dodać jakoś (dodawanie nazwy apki) python manage.py startapp ""
+
+05.06 po poprawkach 
+- users/test.py
+- users/views.py, users/managers/py na razie dodalem TCH004 do ingnora bo bład sie powtarzał
+- trainings/models.py
+- settings.py
+- czy moge mieć tak templates, nie w apkach
+- czy do makefile można dodać jakoś (dodawanie nazwy apki) python manage.py startapp ""
+
