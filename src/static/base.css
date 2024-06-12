@@ -1,0 +1,97 @@
+body {
+  background: #0c0c0c;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  color: #ffffff;
+}
+
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.navbar-brand {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff !important; /* Wymuszona zmiana koloru tekstu  */
+}
+
+.btn-navbar {
+    background-color: #3d3b3b; /* Kolor tła */
+    color: #ffffff;           /* Kolor tekstu */
+    border: none;             /* Usunięcie obramowania */
+    padding: 5px 10px;        /* Odstępy wewnętrzne */
+    border-radius: 3px;       /* Zaokrąglone rogi */
+    cursor: pointer;          /* Kursor wskazujący na kliknięcie */
+    text-decoration: none;    /* Usunięcie podkreślenia tekstu */
+}
+
+.btn-navbar:hover {
+    background-color: #5f788a; /* Kolor tła przy najechaniu kursorem */
+    color: #ffffff;            /* Kolor tekstu przy najechaniu kursorem */
+}
+
+
+.btn-main {
+    background: #3d3b3b;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-right: 10px; /* Dodanie odstępu między przyciskami */
+    margin-bottom: 10px; /* Dodanie odstępu dolnego */
+}
+
+.btn-main:hover {
+    background: #0c0c0c;
+    color: #ffffff;
+}
+
+.btn-second {
+    background: #3d3b3b;
+    color: #ffffff;
+    border: none;
+    padding: 2px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-right: 10px; /* Dodanie odstępu między przyciskami */
+    margin-bottom: 10px; /* Dodanie odstępu dolnego */
+}
+
+.btn-second:hover {
+    background: #0c0c0c;
+    color: #ffffff;
+}
+
+.training-item {
+    margin-bottom: 15px;
+}
+
+.site-header .navbar-nav .training_link {
+    color: rgba(203, 213, 219, 0.74);
+}
+
+.site-header .navbar-nav .training_link:hover {
+    color: #ffffff;
+}

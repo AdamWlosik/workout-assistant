@@ -1,0 +1,7 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <h2>My Trainings</h2>
+  <a class="btn btn-main" href="{% url 'training_create' %}">Create New Training</a>
+    {% include "trainings/_trainings_table.html" %}
+{% endblock %}

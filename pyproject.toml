@@ -9,8 +9,141 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 django = "^5.0.6"
+python-decouple = "^3.8"
 
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.6"
+pre-commit = "^3.7.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "**/migrations/*",
+    "manage.py",
+]
+
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "F",        # Pyflakes
+    "E",        # pycodestyle
+    "W",        # pycodestyle
+    "I",        # isort
+    "N",        # pep8-naming
+#    "D",        # pydocstyle # TODO(bartosz): complete the documentation
+    "UP",       # pyupgrade
+    "YTT",      # flake8-2020
+    "ANN",      # flake8-annotations
+    "ASYNC",    # flake8-async
+    "TRIO",     # flake8-trio
+    "S",        # flake8-bandit
+    "BLE",      # flake8-blind-except
+    "FBT",      # flake8-boolean-trap
+    "B",        # flake8-bugbear
+    "A",        # flake8-builtins
+    "COM",      # flake8-commas
+    "C4",       # flake8-comprehensions
+    "DTZ",      # flake8-datetimez
+    "T10",      # flake8-debugger
+    "DJ",       # flake8-django
+    "EM",       # flake8-errmsg
+    "EXE",      # flake8-executable
+    "FA",       # flake8-future-annotations
+    "ISC",      # flake8-implicit-str-concat
+    "ICN",      # flake8-import-conventions
+    "G",        # flake8-logging-format
+    "INP",      # flake8-no-pep420
+    "PIE",      # flake8-pie
+    "T20",      # flake8-print
+    "PYI",      # flake8-pyi
+    "PT",       # flake8-pytest
+    "Q",        # flake8-quotes
+    "RSE",      # flake8-raise
+    "RET",      # flake8-return
+    "SLF",      # flake8-self
+    "SLOT",     # flake8-slot
+    "SIM",      # flake8-simplify
+    "TID",      # flake8-tidy-imports
+    "TCH",      # flake8-type-checking
+    "INT",      # flake8-gettext
+    "ARG",      # flake8-unused-arguments
+    "PTH",      # flake8-use-pathlib
+    "TD",       # flake8-todos
+    "FIX",      # flake8-fixmee
+    "ERA",      # eradicate
+    "PD",       # pandas-vet
+    "PGH",      # pygrep-hooks
+    "PL",       # Pylint
+    "TRY",      # tryceratops
+    "FLY",      # flynt
+    "NPY",      # NumPy-specific rules
+    "AIR",      # Airflow-specific rules
+    "PERF",     # Perflint
+    # "FURB",     # refurb  # TODO(bartosz): enable when it's ready
+    "LOG",      # flake8-logging
+    "RUF",      # Ruff-specific rules
+]
+ignore = [
+    # "TCH004",    # Move import `django.http.HttpResponse` out of type-checking block. Import is used for more than type hinting. #TODO
+    "PT027",    # Use `pytest.raises` instead of unittest-style `assertRaises` # TODO zaimplemenotwać tą zmienę
+    "ERA001",   # Found commented-out code
+    "PT009",    # Use a regular `assert` instead of unittest-style `assertEqual` # TODO test sie wysypuje po tej zmianie
+    "FIX002",   # Line contains 'TODOs', consider resolving the issue
+    "TD002",    # Missing author in 'TODOs'
+    "TD004",    # Missing colon in 'TODOs'
+    "TD003",    # Missing issue link on the line following this 'TODOs'
+    "W191",     # Indentation contains tabs
+    "E111",     # Indentation is not a multiple of four
+    "E114",     # Indentation is not a multiple of four (comment)
+    "E117",     # Over-indented
+    "D206",     # Docstring should be indented with spaces, not tabs
+    "D300",     # Use """triple double quotes"""
+    "Q000",     # Remove bad quotes inline string
+    "Q001",     # Remove bad quotes multiline
+    "Q002",     # Remove bad quotes docstring
+    "Q003",     # Avoid using backslash to escape quotes
+    "COM812",   # missing whitespace after ',' (comment)
+    "COM819",   # Prohibit trailing whitespace in comment
+    "ISC001",   # Single line implicit string concatenation
+    "ISC002",   # Multiline implicit string concatenation
+    "S101",     # Use of assert detected
+    "SLF001",   # Private member accessed outside class
+    "RUF012",   # Mutable class attributes should be annotated with `typing.ClassVar`
+    "ANN101",   # Missing type annotation for self
+    "ANN002",   # Missing type annotation for *args
+    "ANN003",   # Missing type annotation for **kwargs
+    "ANN102",   # Missing type annotation for cls
+    "D100",     # Missing docstring in public module
+    "D106",     # Missing docstring in public nested class
+]
