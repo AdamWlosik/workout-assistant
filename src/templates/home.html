@@ -1,23 +1,16 @@
 {% extends '_base.html' %}
 
 {% block title %}Home{% endblock %}
+{% load static %}
 
 {% block content %}
 <div style="text-align: center;">
   {% if user.is_authenticated %}
     <p>Welcome, {{ user.email }}!</p>
-    <img src="https://media.tenor.com/WJrxtr--PCUAAAAi/workout-gym.gif" alt="Workout GIF">
-  <!--  <form action="{% url 'logout' %}" method="post">-->
-  <!--    {% csrf_token %}-->
-  <!--    <button type="submit">Log Out</button>-->
-  <!--    <a href="{% url 'profile_view' %}">Profile</a>-->
-  <!--    <a href="{% url 'trainings' %}">Trainings List</a>-->
-  <!--  </form>-->
+    <img src="{% static 'home_gif/workout-gym.gif' %}" alt="Workout GIF">
   {% else %}
     <p>Welcome, to workout assistant app!</p>
-    <img src="https://media.tenor.com/WJrxtr--PCUAAAAi/workout-gym.gif" alt="Workout GIF">
-  <!--  <a href="{% url 'login' %}">Log In</a> |-->
-  <!--  <a href="{% url 'signup' %}">Sign Up</a>-->
+    <img src="{% static 'home_gif/workout-gym.gif' %}" alt="Workout GIF">
   {% endif %}
  </div>
 {% endblock %}

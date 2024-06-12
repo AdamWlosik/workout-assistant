@@ -29,3 +29,13 @@ run: ## Uruchom aplikacje
 #.PHONY: createapp
 #createapp: ## Utwórz nowa aplikacje w projekcie
 #	cd src && #TODO
+
+.PHONY: format
+format: ## Ruff formatowanie i sprawdzanie
+	ruff format && ruff check --fix
+
+.PHONY: createapp
+createapp: ## Utwórz nowa aplikacje w projekcie
+	@read -p "Filename: " APP_NAME \
+	&& cd src && python manage.py startapp $${APP_NAME} \
+	&& echo "createdapp: $${APP_NAME}"

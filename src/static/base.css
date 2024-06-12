@@ -87,3 +87,11 @@ ul {
 .training-item {
     margin-bottom: 15px;
 }
+
+.site-header .navbar-nav .training_link {
+    color: rgba(203, 213, 219, 0.74);
+}
+
+.site-header .navbar-nav .training_link:hover {
+    color: #ffffff;
+}

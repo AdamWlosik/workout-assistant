@@ -32,15 +32,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    gender_choice = {
-        "M": "Male",
-        "F": "Female",
-    }
+    class GenderChoices(models.TextChoices):
+        MALE = "M", _("Male")
+        FEMALE = "F", _("Female")
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30, null=False, default="", blank=True)
     last_name = models.CharField(max_length=30, null=False, default="", blank=True)
     birth_date = models.DateField(blank=True, null=True)
-    gender = models.CharField(max_length=1, choices=gender_choice, null=False, default="", blank=True)
+    gender = models.CharField(max_length=1, choices=GenderChoices, null=False, default="", blank=True)
     weight = models.FloatField(blank=True, null=True)
     height = models.FloatField(blank=True, null=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
@@ -57,12 +57,12 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=CustomUser)
-def create_user_profile(*, _sender: type[CustomUser], instance: CustomUser, created: bool, **_kwargs: dict) -> None:
+def create_user_profile(sender: type[CustomUser], instance: CustomUser, created: bool, **kwargs: dict) -> None:  # noqa: ARG001 FBT001
     if created:
         Profile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=CustomUser)
-def save_user_profile(_sender: type[CustomUser], instance: CustomUser, **_kwargs: dict) -> None:
+def save_user_profile(sender: type[CustomUser], instance: CustomUser, **kwargs: dict) -> None:  # noqa: ARG001
     if hasattr(instance, "profile_view"):
         instance.profile.save()

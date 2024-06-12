@@ -9,6 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 django = "^5.0.6"
+python-decouple = "^3.8"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -114,7 +115,7 @@ select = [
     "RUF",      # Ruff-specific rules
 ]
 ignore = [
-    "TCH004",    # Move import `django.http.HttpResponse` out of type-checking block. Import is used for more than type hinting. #TODO
+    # "TCH004",    # Move import `django.http.HttpResponse` out of type-checking block. Import is used for more than type hinting. #TODO
     "PT027",    # Use `pytest.raises` instead of unittest-style `assertRaises` # TODO zaimplemenotwać tą zmienę
     "ERA001",   # Found commented-out code
     "PT009",    # Use a regular `assert` instead of unittest-style `assertEqual` # TODO test sie wysypuje po tej zmianie
