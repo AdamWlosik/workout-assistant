@@ -1,18 +1,7 @@
 from django import forms
-from django.forms import modelformset_factory
 from exercises.models import Exercise
 
-from trainings.models import Category, Training, TrainingExercise
-
-
-class TrainingExerciseForm(forms.ModelForm):
-    class Meta:
-        model = TrainingExercise
-        fields = ["exercise", "reps"]
-        widgets = {
-            "reps": forms.TextInput(attrs={"placeholder": "e.g., 10kg x 12"}),
-            "exercise": forms.Select(attrs={"class": "form-control"}),
-        }
+from trainings.models import Category, Training
 
 
 class TrainingForm(forms.ModelForm):
@@ -36,21 +25,9 @@ class TrainingForm(forms.ModelForm):
         self.fields["exercises"].queryset = Exercise.objects.filter(user=self.request.user)
         self.fields["category"].queryset = Category.objects.all()
 
-        self.TrainingExerciseFormSet = modelformset_factory(TrainingExercise, form=TrainingExerciseForm, extra=1)
-        self.formset = self.TrainingExerciseFormSet(queryset=TrainingExercise.objects.none())
-
-    def is_valid(self):  # noqa: ANN201 #TODO (Adam) ruff poprawic
-        return super().is_valid() and self.formset.is_valid()
-
     def save(self, commit=True):  # noqa: ANN201 FBT002 ANN001 #TODO (Adam) ruff poprawic
         instance = super().save(commit=False)
         if commit:
             instance.save()
             self.save_m2m()
-            self.formset.save(commit=False)
-            for form in self.formset:
-                if form.cleaned_data:
-                    training_exercise = form.save(commit=False)
-                    training_exercise.training = instance
-                    training_exercise.save()
         return instance
