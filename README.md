@@ -107,6 +107,8 @@ wcięcie tab nie 4 spacje
 ### TODO my notes
 - poprawić informacje o wymagach hasła bo niewidoczne czarne na czarnym
 - dodać uzupełnianie profilu przy rejstracji
+- przygotować dockerfile 
+  - https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/ https://docs.djangoproject.com/en/5.0/howto/deployment/
 
 
 # TODO

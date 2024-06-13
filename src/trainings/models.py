@@ -5,41 +5,13 @@ from exercises.models import Exercise
 
 
 class Category(models.Model):
-    class CategoryChoices(models.TextChoices):
-        CHEST = "1", _("Chest")
-        BACK = "2", _("Back")
-        TRICEPS = "3", _("Triceps")
-        FOREARM = "4", _("Forearm")
-        LEGS = "5", _("Legs")
-        SHOULDERS = "6", _("Shoulders")
-        BICEPS = "7", _("Biceps")
-        ABS = "8", _("ABS")
-        GLUTES = "9", _("Glutes")
-        NECKS = "10", _("Necks")
-        WARM_UP = "11", _("Warm Up")
-        CARDIO = "12", _("Cardio")
+    name = models.CharField(max_length=100, unique=True)
 
-    category = models.CharField(max_length=100, choices=CategoryChoices.choices, default="")
-
-    def __str__(self):  # noqa: ANN204 # TODO (Adam) ruff poprawic
-        return self.get_category_display()
+    def __str__(self) -> str:
+        return self.name
 
 
 class Training(models.Model):
-    # class CategoryChoices(models.TextChoices):
-    #     CHEST = "1", _("Chest")
-    #     BACK = "2", _("Back")
-    #     TRICEPS = "3", _("Triceps")
-    #     FOREARM = "4", _("Forearm")
-    #     LEGS = "5", _("Legs")
-    #     SHOULDERS = "6", _("Shoulders")
-    #     BICEPS = "7", _("Biceps")
-    #     ABS = "8", _("ABS")
-    #     GLUTES = "9", _("Glutes")
-    #     NECKS = "10", _("Necks")
-    #     WARM_UP = "11", _("Warm Up")
-    #     CARDIO = "12", _("Cardio")
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
@@ -53,9 +25,7 @@ class Training(models.Model):
         blank=True,
     )
     # TODO reps = ... ()kg x (), połączone z exercise czyli dodając excercise pojawia sie opcja dodania reps
-    # category = models.CharField(max_length=100, choices=CategoryChoices)
-    category = models.ManyToManyField(Category, verbose_name=_("Category"), default="", blank=True)
-    # TODO categories = models.ManyToManyField() dalej nie działa puste okienko
+    category = models.ManyToManyField(Category, verbose_name=_("Category"), blank=True, related_name="trainings")
 
     def __str__(self) -> str:
         return self.name
