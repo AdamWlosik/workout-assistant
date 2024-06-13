@@ -3,6 +3,8 @@
     <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
+        <th scope="col">Category</th>
+        <th scope="col">Exercises</th>
         <th scope="col">Action</th>
     </tr>
     </thead>
@@ -10,7 +12,21 @@
     {% for training in trainings %}
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
-            <td><a class="nav-item nav-link" href="{% url 'training_detail' training.id %}">{{ training.name }}</a></td>
+            <td>
+                <a class="nav-item nav-link" href="{% url 'training_detail' training.id %}">{{ training.name }}</a>
+            </td>
+            <td>
+                <span>{{  training.get_category_display }}</span>
+            </td>
+            <td>
+                {% for exercise in training.exercises.all %}
+                    <a class="nav-item nav-link d-inline-block" href="{% url 'exercise_detail' exercise.id %}">
+                        {{ exercise.name }},</a>
+                    {% if forloop.counter|divisibleby:"4" and not forloop.last %}
+                        <br>
+                    {% endif %}
+                {% endfor %}
+            </td>
             <td>
                 <a class="btn btn-second" href="{% url 'training_edit' training.id %}">Edit</a>
                 <a class="btn btn-second" href="{% url 'training_delete' training.id %}">Delete</a>

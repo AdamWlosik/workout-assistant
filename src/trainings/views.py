@@ -28,28 +28,33 @@ def training_detail(request: "HttpRequest", training_id: int) -> "HttpResponse":
 
 
 @login_required
-def training_create(request: "HttpRequest") -> "HttpResponse":
+def training_create(request):  # noqa: ANN001 ANN201 # TODO (Adam) ruff poprawic
     """Function to display view to create a new training"""
+
     if request.method == "POST":
         form = TrainingForm(request.POST)
         if form.is_valid():
             training = form.save(commit=False)
             training.user = request.user
             form.save()
+            form.save_m2m()
             return redirect("trainings")
     else:
         form = TrainingForm()
+
     return render(request, "trainings/training_form.html", {"form": form})
 
 
 @login_required
 def training_edit(request: "HttpRequest", training_id: int) -> "HttpResponse":
     """Function to display view to create a new training"""
+
     training = get_object_or_404(Training, id=training_id, user=request.user)
     if request.method == "POST":
         form = TrainingForm(request.POST, instance=training)
         if form.is_valid():
             form.save()
+            form.save_m2m()
             return redirect("trainings")
     else:
         form = TrainingForm(instance=training)

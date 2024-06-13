@@ -133,3 +133,7 @@ wcięcie tab nie 4 spacje
 - czy moge mieć tak templates, nie w apkach
 - czy do makefile można dodać jakoś (dodawanie nazwy apki) python manage.py startapp ""
 
+12.06
+- docker, czy przenosimy appke na dockera?
+- trainings/models.py dodać możliwość wyboru kilku kategorii do treningu
+
