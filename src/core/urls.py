@@ -26,6 +26,7 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("trainings/", include("trainings.urls")),
+    path("exercises/", include("exercises.urls")),
 ]
 
 if settings.DEBUG:

@@ -42,6 +42,7 @@ ul {
     border-radius: 3px;       /* Zaokrąglone rogi */
     cursor: pointer;          /* Kursor wskazujący na kliknięcie */
     text-decoration: none;    /* Usunięcie podkreślenia tekstu */
+    margin-right: 10px;
 }
 
 .btn-navbar:hover {
@@ -84,14 +85,6 @@ ul {
     color: #ffffff;
 }
 
-.training-item {
-    margin-bottom: 15px;
-}
-
-.site-header .navbar-nav .training_link {
-    color: rgba(203, 213, 219, 0.74);
-}
-
-.site-header .navbar-nav .training_link:hover {
-    color: #ffffff;
+.white-font {
+    color: white !important;
 }

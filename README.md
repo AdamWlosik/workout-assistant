@@ -107,6 +107,8 @@ wcięcie tab nie 4 spacje
 ### TODO my notes
 - poprawić informacje o wymagach hasła bo niewidoczne czarne na czarnym
 - dodać uzupełnianie profilu przy rejstracji
+- przygotować dockerfile 
+  - https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/ https://docs.djangoproject.com/en/5.0/howto/deployment/
 
 
 # TODO
@@ -132,4 +134,8 @@ wcięcie tab nie 4 spacje
 - settings.py
 - czy moge mieć tak templates, nie w apkach
 - czy do makefile można dodać jakoś (dodawanie nazwy apki) python manage.py startapp ""
+
+12.06
+- docker, czy przenosimy appke na dockera?
+- trainings/models.py dodać możliwość wyboru kilku kategorii do treningu
 
