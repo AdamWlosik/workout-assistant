@@ -1,0 +1,42 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-5">Trainings Calendar</h1>
+        <h2>{{ month }}/{{ year }}</h2>
+        <table class="calendar table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in month_days %}
+                    <tr>
+                        {% for day in week %}
+                            <td>
+                                {% if day != 0 %}
+                                    <div>{{ day }}</div>
+                                    {% if event_dict %}
+                                        {% for event in event_dict%}
+                                            {% if event.date.day == day %}
+                                                <span class="black-font">{{ event.title }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    <a class="btn btn-main" href="{% url 'add_event' %}">+</a>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

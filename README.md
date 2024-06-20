@@ -139,3 +139,6 @@ wcięcie tab nie 4 spacje
 - docker, czy przenosimy appke na dockera?
 - trainings/models.py dodać możliwość wyboru kilku kategorii do treningu
 
+20.06
+- czy powinienem utworzyć osobna apke events
+- templates/calendary_wiew.html linia 27 jak skorzystać z mojej clasy css 
