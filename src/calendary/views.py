@@ -56,7 +56,7 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
             return redirect("calendary_view")
     else:
         form = EventForm()
-    return render(request, "calendary/add_event.html", {"form": form})
+    return render(request, "calendary/event_form.html", {"form": form})
 
 
 @login_required
@@ -64,3 +64,19 @@ def event_detail(request: "HttpRequest", event_id: int) -> "HttpResponse":
     """Function tu display the details of a selected training"""
     event = get_object_or_404(Event, id=event_id, user=request.user)
     return render(request, "calendary/event_detail.html", {"event": event})
+
+
+@login_required
+def event_edit(request: "HttpRequest", event_id: int) -> "HttpResponse":
+    """Function to display view to create a new event"""
+
+    event = get_object_or_404(Event, id=event_id, user=request.user)
+    if request.method == "POST":
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            form.save_m2m()
+            return redirect("calendary_view")
+    else:
+        form = EventForm(instance=event)
+    return render(request, "calendary/event_form.html", {"form": form})
