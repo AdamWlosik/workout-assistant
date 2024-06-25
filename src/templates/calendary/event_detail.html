@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <h2>Name: {{ event.title }}</h2>
+  <p>Description: {{ event.description }}</p>
+  <p>Date: {{ event.date }}</p>
+    {% for training in event.trainings.all %}
+        <p>Training: {{ training.name }}</p>
+    {% endfor %}
+  <a class="btn btn-main" href="{% url 'event_edit' event.id %}">Edit</a>
+  <a class="btn btn-main" href="{% url 'calendary_view' %}">Back to list</a>
+{% endblock %}
