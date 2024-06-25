@@ -25,6 +25,7 @@ def calendar_view(request: "HttpRequest") -> "HttpResponse":
     for week in month_days:
         week_events = [(day, Event.objects.filter(date__year=year, date__month=month)) for day in week]
         events.append(week_events)
+    # TODO day jako datetime object
 
     prev_month = (year, month - 1) if month > 1 else (year - 1, 12)
     next_month = (year, month + 1) if month < 12 else (year + 1, 1)  # noqa: PLR2004
@@ -46,6 +47,7 @@ def calendar_view(request: "HttpRequest") -> "HttpResponse":
 
 @login_required
 def add_event(request: "HttpRequest") -> "HttpResponse":
+    day_params = request.GET.get("day")
     if request.method == "POST":
         form = EventForm(request.POST)
         if form.is_valid():
@@ -55,7 +57,15 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
             form.save_m2m()
             return redirect("calendary_view")
     else:
-        form = EventForm()
+        initial_data = {}
+        if day_params:
+            initial_data["date"] = datetime.strptime(day_params, "%Y-%m-%d").date()  # noqa: DTZ007
+            # TODO ruff fix
+            #  File "/home/adam/workout-assistant/src/calendary/views.py", line 62, in add_event
+            #     initial_data['date'] = datetime.fromisoformat(day_params).date()
+            #                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            # ValueError: Invalid isoformat string: '2024-6-15'
+        form = EventForm(initial=initial_data)
     return render(request, "calendary/event_form.html", {"form": form})
 
 

@@ -104,11 +104,11 @@ ul {
 }
 
 .calendary-today {
-    background-color: #7aa5e3;
-    color: white;
+    --bs-table-color-state: white;
+    --bs-table-bg-state: #7aa5e3;
 }
 
 .past-day {
-    background-color: rgba(203, 213, 219, 0.47);
-    color: #0c0c0c;
+    --bs-table-color-state: #0c0c0c;
+    --bs-table-bg-state: rgba(203, 213, 219, 0.47);
 }
