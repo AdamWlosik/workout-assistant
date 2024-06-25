@@ -24,20 +24,19 @@
                 {% for week in events %}
                     <tr>
                         {% for day, events in week %}
-{#                            <td class="{% if today.year >= year and today.month >= month and today.day > day %} past-day {% endif %}#}
-{#                                       {% if today.year == year and today.month == month and today.day == day %} calendary-today {% endif %}">#}
-                            <td     {% if today.year >= year and today.month >= month and today.day > day %}class="bg-primary text-white"{% endif %}
-                                    {% if today.year == year and today.month == month and today.day == day %}class="bg-primary text-white"{% endif %}>
+                            <td class="{% if today.year == year and today.month == month and today.day == day %}calendary-today
+                                       {% elif today.year >= year and today.month >= month and today.day > day %}past-day{% endif %}">
                                 {% if day != 0 %}
                                     <div>{{ day }}</div>
                                     <br />
                                     {% for event in events %}
                                         {% if event.date.day == day %}
                                             <a class="nav-item nav-link" href="{% url 'event_detail' event.id %}">
-                                                {{event.title}} </a>
+                                                {{ event.title }}
+                                            </a>
                                         {% endif %}
                                     {% endfor %}
-                                    <a class="btn btn-main" href="{% url 'add_event' %}">+</a>
+                                    <a class="btn btn-main" href="{% url 'add_event' %}?day={{ year }}-{{ month }}-{{ day }}">+</a>
                                 {% endif %}
                             </td>
                         {% endfor %}

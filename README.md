@@ -142,3 +142,6 @@ wcięcie tab nie 4 spacje
 20.06
 - czy powinienem utworzyć osobna apke events
 - templates/calendary_wiew.html linia 27 jak skorzystać z mojej clasy css 
+
+27.06
+- dodałem pobierania dnia z +, dnia który wybraliśmy w kalendarzy do formularza tworzenia eventu i zmergowałem do main
