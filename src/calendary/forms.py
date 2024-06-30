@@ -11,7 +11,7 @@ class EventForm(forms.ModelForm):
             "date": forms.DateInput(attrs={"type": "date", "class": "black-font"}),
         }
 
-    def save(self, commit=True):  # noqa: ANN201 FBT002 ANN001 #TODO (Adam) ruff poprawic
+    def save(self, commit: bool = True) -> Event:
         instance = super().save(commit=False)
         if commit:
             instance.save()

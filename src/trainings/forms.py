@@ -11,21 +11,25 @@ class TrainingForm(forms.ModelForm):
             "is_active",
             "name",
             "description",
-            "category",
+            "categories",
             "exercises",
         ]
         widgets = {
-            "category": forms.CheckboxSelectMultiple(attrs={"class": "white-font"}),
+            "categories": forms.CheckboxSelectMultiple(attrs={"class": "white-font"}),
             "exercises": forms.CheckboxSelectMultiple(attrs={"class": "white-font"}),
         }
 
-    def __init__(self, *args, **kwargs):  # noqa: ANN204 #TODO (Adam) ruff poprawic
+    def __init__(self, *args, **kwargs) -> None:
         self.request = kwargs.pop("request")
         super().__init__(*args, **kwargs)
         self.fields["exercises"].queryset = Exercise.objects.filter(user=self.request.user)
-        self.fields["category"].queryset = Category.objects.all()
+        self.fields["categories"].queryset = Category.objects.all()
 
-    def save(self, commit=True):  # noqa: ANN201 FBT002 ANN001 #TODO (Adam) ruff poprawic
+    def save(self, commit: bool = True) -> Training:
+        # TODO FBT001 Boolean default positional argument in function definition
+        # FBT002 Boolean default positional argument in function definition
+        #  def save(self, *, commit: bool = True) -> Training:
+        # globalny ignor w pyproject.toml
         instance = super().save(commit=False)
         if commit:
             instance.save()

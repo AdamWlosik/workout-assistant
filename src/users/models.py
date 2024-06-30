@@ -57,12 +57,12 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=CustomUser)
-def create_user_profile(sender: type[CustomUser], instance: CustomUser, created: bool, **kwargs: dict) -> None:  # noqa: ARG001 FBT001
+def create_user_profile(sender: type[CustomUser], instance: CustomUser, created: bool, **kwargs: dict) -> None:
     if created:
         Profile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=CustomUser)
-def save_user_profile(sender: type[CustomUser], instance: CustomUser, **kwargs: dict) -> None:  # noqa: ARG001
+def save_user_profile(sender: type[CustomUser], instance: CustomUser, **kwargs: dict) -> None:
     if hasattr(instance, "profile_view"):
         instance.profile.save()

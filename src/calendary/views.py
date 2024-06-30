@@ -1,9 +1,10 @@
 import calendar as cal
-from datetime import datetime
+import datetime
 from typing import TYPE_CHECKING
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.timezone import now
 
 from calendary.forms import EventForm
 
@@ -12,10 +13,15 @@ from .models import Event
 if TYPE_CHECKING:
     from django.http import HttpRequest, HttpResponse
 
+DECEMBER = 12
+JANUARY = 1
+
 
 @login_required
 def calendar_view(request: "HttpRequest") -> "HttpResponse":
-    today = datetime.today()  # noqa: DTZ002
+    today = now()
+    # TODO DTZ002 `datetime.datetime.today()` used  today = datetime.today() na today = datetime.now()
+    # DTZ005 `datetime.datetime.now()` called without a `tz` argument today = datetime.now() na today = now()
     year = int(request.GET.get("year", today.year))
     month = int(request.GET.get("month", today.month))
     cal_obj = cal.Calendar(firstweekday=6)
@@ -25,10 +31,10 @@ def calendar_view(request: "HttpRequest") -> "HttpResponse":
     for week in month_days:
         week_events = [(day, Event.objects.filter(date__year=year, date__month=month)) for day in week]
         events.append(week_events)
-    # TODO day jako datetime object
+    # TODO (przyszła optymalizacja) day jako datetime object
 
-    prev_month = (year, month - 1) if month > 1 else (year - 1, 12)
-    next_month = (year, month + 1) if month < 12 else (year + 1, 1)  # noqa: PLR2004
+    prev_month = (year, month - 1) if month > JANUARY else (year - 1, DECEMBER)
+    next_month = (year, month + 1) if month < DECEMBER else (year + 1, JANUARY)
 
     return render(
         request,
@@ -59,12 +65,9 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
     else:
         initial_data = {}
         if day_params:
-            initial_data["date"] = datetime.strptime(day_params, "%Y-%m-%d").date()  # noqa: DTZ007
-            # TODO ruff fix
-            #  File "/home/adam/workout-assistant/src/calendary/views.py", line 62, in add_event
-            #     initial_data['date'] = datetime.fromisoformat(day_params).date()
-            #                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # ValueError: Invalid isoformat string: '2024-6-15'
+            initial_data["date"] = datetime.datetime.strptime(day_params, "%Y-%m-%d").astimezone(datetime.timezone.utc)
+            # initial_data["date"] = datetime.strptime(day_params, "%Y-%m-%d").date()
+            #  TODO DTZ007 Naive datetime constructed using `datetime.datetime.strptime()` without %z
         form = EventForm(initial=initial_data)
     return render(request, "calendary/event_form.html", {"form": form})
 

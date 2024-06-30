@@ -1,16 +1,13 @@
-from typing import TYPE_CHECKING  # noqa: I001
+from typing import TYPE_CHECKING
 
-from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import TrainingForm
 from .models import Training
 
 if TYPE_CHECKING:
-    from django.http import HttpResponse, HttpRequest  # noqa: I001
-
-# TODO src/trainings/views.py:1:1: I001 [*] Import block is un-sorted or un-formatted
-# src/trainings/views.py:10:1: I001 [*] Import block is un-sorted or un-formatted
+    from django.http import HttpRequest, HttpResponse
 
 
 @login_required
@@ -28,7 +25,7 @@ def training_detail(request: "HttpRequest", training_id: int) -> "HttpResponse":
 
 
 @login_required
-def training_create(request):  # noqa: ANN001 ANN201 # TODO (Adam) ruff poprawic
+def training_create(request: "HttpRequest") -> "HttpResponse":
     """Function to display view to create a new training"""
 
     if request.method == "POST":

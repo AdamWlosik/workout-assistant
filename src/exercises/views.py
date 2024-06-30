@@ -1,13 +1,13 @@
-from typing import TYPE_CHECKING  # noqa: I001
+from typing import TYPE_CHECKING
 
-from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import ExerciseForm
 from .models import Exercise
 
 if TYPE_CHECKING:
-    from django.http import HttpResponse, HttpRequest  # noqa: I001
+    from django.http import HttpRequest, HttpResponse
 
 
 @login_required

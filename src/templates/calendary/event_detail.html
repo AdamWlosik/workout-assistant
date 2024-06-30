@@ -9,4 +9,7 @@
     {% endfor %}
   <a class="btn btn-main" href="{% url 'event_edit' event.id %}">Edit</a>
   <a class="btn btn-main" href="{% url 'calendary_view' %}">Back to list</a>
+  <a class="btn btn-main" href="{% url 'calendary_view' %}">Start training</a>
+    {% include "trainings/training_event_detail.html" %}
+
 {% endblock %}
