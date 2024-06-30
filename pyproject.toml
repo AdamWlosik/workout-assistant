@@ -115,8 +115,11 @@ select = [
     "RUF",      # Ruff-specific rules
 ]
 ignore = [
-    # "TCH004",    # Move import `django.http.HttpResponse` out of type-checking block. Import is used for more than type hinting. #TODO
-    "PT027",    # Use `pytest.raises` instead of unittest-style `assertRaises` # TODO zaimplemenotwać tą zmienę
+    "FBT002",  # Boolean default positional argument in function definition # TODO
+    "FBT001",  # Boolean-typed positional argument in function definition # TODO
+    "ARG001",  # Unused function argument: `sender`, Unused function argument: `kwargs`
+    # "TCH004",    # Move import `django.http.HttpResponse` out of type-checking block. Import is used for more than type hinting.
+    "PT027",    # Use `pytest.raises` instead of unittest-style `assertRaises` # TODO zaimplemenotwać tą zmienę?
     "ERA001",   # Found commented-out code
     "PT009",    # Use a regular `assert` instead of unittest-style `assertEqual` # TODO test sie wysypuje po tej zmianie
     "FIX002",   # Line contains 'TODOs', consider resolving the issue
