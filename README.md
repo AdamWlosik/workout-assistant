@@ -147,6 +147,4 @@ wcięcie tab nie 4 spacje
 - dodałem pobierania dnia z +, dnia który wybraliśmy w kalendarzy do formularza tworzenia eventu i zmergowałem do main
 
 04.07
-- trainings/forms.py inny sposób niż rozwiązanie z *
-- pyproject.toml
-- calendary/views.py poprawki wdg ruffa do zaakceptowania
+- calendary/views.py poprawki wdg ruffa do zaakceptowania zakomentowany wcześniejszy kod wraz z błędem z ruff
