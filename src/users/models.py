@@ -57,7 +57,7 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=CustomUser)
-def create_user_profile(sender: type[CustomUser], instance: CustomUser, created: bool, **kwargs: dict) -> None:
+def create_user_profile(sender: type[CustomUser], instance: CustomUser, *, created: bool, **kwargs: dict) -> None:
     if created:
         Profile.objects.create(user=instance)
 

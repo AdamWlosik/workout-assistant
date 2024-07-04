@@ -38,6 +38,7 @@ class TrainingExercise(models.Model):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     reps = models.CharField(max_length=50, blank=True, verbose_name=_("Reps (e.g., 10kg x 12)"))
+    # TODO ArrayFields
 
     def __str__(self) -> str:
         return f"{self.training.name} - {self.exercise.name}"

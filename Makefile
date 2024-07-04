@@ -39,3 +39,11 @@ createapp: ## Utwórz nowa aplikacje w projekcie
 	@read -p "Filename: " APP_NAME \
 	&& cd src && python manage.py startapp $${APP_NAME} \
 	&& echo "createdapp: $${APP_NAME}"
+
+.PHONY: logs
+logs: ## Idź za logami dockera
+	docker-compose logs -f
+
+.PHONY: shell-web
+shell-web: ## Idź do shella serwisu web
+	docker-compose exec web /bin/sh
