@@ -1,0 +1,52 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-5">Trainings Calendar</h1>
+        <h2>{{ month }}/{{ year }}</h2>
+        <div class="d-flex justify-content-between mb-2">
+            <a href="?year={{ prev_month.0 }}&month={{ prev_month.1 }}" class="btn btn-main">Previous Month</a>
+            <a href="?year={{ next_month.0 }}&month={{ next_month.1 }}" class="btn btn-main">Next Month</a>
+        </div>
+        <table class="calendar table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in events %}
+                    <tr>
+                        {% for day, events in week %}
+{#                            <td class="{% if today.year >= year and today.month >= month and today.day > day %} past-day {% endif %}#}
+{#                                       {% if today.year == year and today.month == month and today.day == day %} calendary-today {% endif %}">#}
+                            <td     {% if today.year >= year and today.month >= month and today.day > day %}class="past-day"{% endif %}
+                                    {% if today.year == year and today.month == month and today.day == day %}class="calendary-today"{% endif %}>
+{#                                <td>#}
+{#                                {% if today.date > day.date %} test#}
+{#                                {% endif %}#}
+                                {% if day != 0 %}
+                                    <div>{{ day }}</div>
+                                    <br />
+                                    {% for event in events %}
+                                        {% if event.date.day == day %}
+                                            <a class="nav-item nav-link" href="{% url 'event_detail' event.id %}">
+                                                {{event.title}} </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <a class="btn btn-main" href="{% url 'add_event' %}?day=2020-01-01">+</a>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

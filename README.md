@@ -139,3 +139,12 @@ wcięcie tab nie 4 spacje
 - docker, czy przenosimy appke na dockera?
 - trainings/models.py dodać możliwość wyboru kilku kategorii do treningu
 
+20.06
+- czy powinienem utworzyć osobna apke events
+- templates/calendary_wiew.html linia 27 jak skorzystać z mojej clasy css 
+
+27.06
+- dodałem pobierania dnia z +, dnia który wybraliśmy w kalendarzy do formularza tworzenia eventu i zmergowałem do main
+
+04.07
+- calendary/views.py poprawki wdg ruffa do zaakceptowania zakomentowany wcześniejszy kod wraz z błędem z ruff

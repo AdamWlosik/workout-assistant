@@ -88,3 +88,27 @@ ul {
 .white-font {
     color: white !important;
 }
+
+.black-font {
+    color: #0c0c0c !important;
+}
+
+.calendar {
+            table-layout: fixed;
+}
+.calendar th, .calendar td {
+            width: 14.285%;
+            border: 1px solid #0c0c0c;
+            vertical-align: top;
+            position: relative;
+}
+
+.calendary-today {
+    --bs-table-color-state: white;
+    --bs-table-bg-state: #7aa5e3;
+}
+
+.past-day {
+    --bs-table-color-state: #0c0c0c;
+    --bs-table-bg-state: rgba(203, 213, 219, 0.47);
+}

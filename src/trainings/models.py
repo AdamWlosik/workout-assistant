@@ -25,19 +25,20 @@ class Training(models.Model):
         blank=True,
     )
     # TODO reps = ... ()kg x (), połączone z exercise czyli dodając excercise pojawia sie opcja dodania reps
-    category = models.ManyToManyField(Category, verbose_name=_("Category"), blank=True, related_name="trainings")
+    categories = models.ManyToManyField(Category, verbose_name=_("Categories"), blank=True, related_name="trainings")
 
     def __str__(self) -> str:
         return self.name
+
+    def get_category_display(self) -> str:
+        return ", ".join(category.name for category in self.categories.all())
 
 
 class TrainingExercise(models.Model):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     reps = models.CharField(max_length=50, blank=True, verbose_name=_("Reps (e.g., 10kg x 12)"))
+    # TODO ArrayFields
 
-    class Meta:
-        unique_together = ("training", "exercise")
-
-    def __str__(self):  # noqa: ANN204 # TODO (Adam) ruff poprawic
+    def __str__(self) -> str:
         return f"{self.training.name} - {self.exercise.name}"
