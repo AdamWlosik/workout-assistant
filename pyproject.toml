@@ -10,6 +10,9 @@ readme = "README.md"
 python = "^3.12"
 django = "^5.0.6"
 python-decouple = "^3.8"
+django-bootstrap-datepicker-plus = "^5.0.5"
+Pillow = "^10.3.0"
+psycopg2-binary = "^2.9.6"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -115,8 +118,6 @@ select = [
     "RUF",      # Ruff-specific rules
 ]
 ignore = [
-    "FBT002",  # Boolean default positional argument in function definition # TODO
-    "FBT001",  # Boolean-typed positional argument in function definition # TODO
     "ARG001",  # Unused function argument: `sender`, Unused function argument: `kwargs`
     # "TCH004",    # Move import `django.http.HttpResponse` out of type-checking block. Import is used for more than type hinting.
     "PT027",    # Use `pytest.raises` instead of unittest-style `assertRaises` # TODO zaimplemenotwać tą zmienę?

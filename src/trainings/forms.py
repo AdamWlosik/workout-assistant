@@ -25,11 +25,7 @@ class TrainingForm(forms.ModelForm):
         self.fields["exercises"].queryset = Exercise.objects.filter(user=self.request.user)
         self.fields["categories"].queryset = Category.objects.all()
 
-    def save(self, commit: bool = True) -> Training:
-        # TODO FBT001 Boolean default positional argument in function definition
-        # FBT002 Boolean default positional argument in function definition
-        #  def save(self, *, commit: bool = True) -> Training:
-        # globalny ignor w pyproject.toml
+    def save(self, *, commit: bool = True) -> Training:
         instance = super().save(commit=False)
         if commit:
             instance.save()

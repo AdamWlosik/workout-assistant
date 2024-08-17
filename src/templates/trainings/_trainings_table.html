@@ -16,7 +16,7 @@
                 <a class="nav-item nav-link" href="{% url 'training_detail' training.id %}">{{ training.name }}</a>
             </td>
             <td>
-                {% for category in training.category.all %}
+                {% for category in training.categories.all %}
                     <span>{{  category.name }},</span>
                     {% if forloop.counter|divisibleby:"4" and not forloop.last %}
                         <br>

@@ -40,7 +40,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=30, null=False, default="", blank=True)
     last_name = models.CharField(max_length=30, null=False, default="", blank=True)
     birth_date = models.DateField(blank=True, null=True)
-    gender = models.CharField(max_length=1, choices=GenderChoices, null=False, default="", blank=True)
+    gender = models.CharField(max_length=10, choices=GenderChoices, null=False, default="", blank=True)
     weight = models.FloatField(blank=True, null=True)
     height = models.FloatField(blank=True, null=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
@@ -57,7 +57,7 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=CustomUser)
-def create_user_profile(sender: type[CustomUser], instance: CustomUser, created: bool, **kwargs: dict) -> None:
+def create_user_profile(sender: type[CustomUser], instance: CustomUser, *, created: bool, **kwargs: dict) -> None:
     if created:
         Profile.objects.create(user=instance)
 
