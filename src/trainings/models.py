@@ -25,13 +25,13 @@ class Training(models.Model):
         blank=True,
     )
     # TODO reps = ... ()kg x (), połączone z exercise czyli dodając excercise pojawia sie opcja dodania reps
-    categories = models.ManyToManyField(Category, verbose_name=_("Categories"), blank=True, related_name="trainings")
+    category = models.ManyToManyField(Category, verbose_name=_("Categories"), blank=True, related_name="trainings")
 
     def __str__(self) -> str:
         return self.name
 
     def get_category_display(self) -> str:
-        return ", ".join(category.name for category in self.categories.all())
+        return ", ".join(category.name for category in self.category.all())
 
 
 class TrainingExercise(models.Model):
