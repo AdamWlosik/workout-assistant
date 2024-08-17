@@ -32,7 +32,7 @@ Dodaj aplikacje do INSTALLED_APPS w pliku settings.py:
 - Opcja dodania treningu
   - Dodanie cyklu treningów np. 3 dni treningowe, 1 dzień przerwy na cały miesiąc/rok
   - Dodanie pojedynczego treningu
-- Opcja edycji treningu
+- Opcja edycji treningudocker-compose up -d --build
 - Opcja usunięcia treningu
 - Opcja rozpoczęcia treningu: po kliknięciu w trening przenosi do zakładki Trening
 
