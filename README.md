@@ -148,3 +148,7 @@ wcięcie tab nie 4 spacje
 
 04.07
 - calendary/views.py poprawki wdg ruffa do zaakceptowania zakomentowany wcześniejszy kod wraz z błędem z ruff
+
+22.08
+- problem z migracją, logi po zmienie z categories na categroy w trainings/models.py
+- nie da się utworzyć treniengu w Trainings List
