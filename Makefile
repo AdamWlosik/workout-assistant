@@ -42,28 +42,28 @@ createapp: ## Utwórz nowa aplikacje w projekcie
 
 .PHONY: logs
 logs: ## Idź za logami dockera
-	docker-compose logs -f
+	docker compose logs -f
 
 .PHONY: shell-web
 shell-web: ## Idź do shella serwisu web
-	docker-compose exec web /bin/sh
+	docker compose exec web /bin/sh
 
 .PHONY: docker-migrations
 docker-migrations: ## Utwórz migracie
-	@ (cd src && docker-compose exec web python manage.py makemigrations)
+	@ (cd src && docker compose exec web python manage.py makemigrations)
 
 .PHONY: docker-migrate
 docker-migrate: ## Zmigruj baze
-	cd src && docker-compose exec web python manage.py migrate
+	cd src && docker compose exec web python manage.py migrate
 
 .PHONY: docker-run
 docker-run: ## Uruchom aplikacje
-	cd src && docker-compose up -d
+	cd src && docker compose up -d
 
 .PHONY: docker-build_image
 docker-build_image: ## Zbuduj image
-	cd src && docker-compose build
+	cd src && docker compose build
 
 .PHONY: docker-logs
 docker-logs: ## Wyswietl logi
-	cd src && docker-compose logs -f
+	cd src && docker compose logs -f
