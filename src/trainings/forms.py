@@ -1,15 +1,20 @@
 from django import forms
 from django.forms import inlineformset_factory
+from django_jsonform.forms.fields import ArrayFormField
 
 from trainings.models import Category, Training, TrainingExercise
 
 
 class TrainingExerciseForm(forms.ModelForm):
+    reps = ArrayFormField(forms.CharField)
+
     class Meta:
         model = TrainingExercise
         fields = ["exercise", "reps"]
         widgets = {
-            "reps": forms.TextInput(attrs={"placeholder": "e.g., 10kg x 12"}),
+            # "reps": forms.TextInput(attrs={"placeholder": "e.g., 10kg x 12"}),
+            # my_field = JSONFormField(schema=schema)
+            # "reps": JSONFormField(schema=schema)
             "exercise": forms.Select(attrs={"class": "form-control"}),
             # TODO wyswietla exercise wszystkich użytkowników, nie działa Save w edit_training,
             #  nie działa Remove i Add Excercise
