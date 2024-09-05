@@ -7,7 +7,6 @@
     {{ form.as_p }}
     {{ formset.management_form }}
     <div id="formset">
-    <form method="post">
       {% for subform in formset %}
         <div class="formset-row">
           {{ subform.id }}
@@ -16,9 +15,8 @@
           <button type="button" class="remove-formset-row">Remove</button>
         </div>
       {% endfor %}
-    </form>
     </div>
-    <button type="button" id="add-exercise">Add Exercise</button>
+{#    <button type="button" id="add-exercise">Add Exercise</button>#}
     <button type="submit" class="btn btn-main">Save</button>
   </form>
   <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
@@ -26,29 +24,4 @@
 
 {% block scripts %}
   {{ formset.media }}
-  <script>
-  $(document).ready(function() {
-      var formset = $('#id_trainingexercise_set-TOTAL_FORMS').val();
-      var addButton = $('#add-exercise');
-      var formWrapper = $('#formset');
-
-      addButton.on('click', function(event) {
-          console.log("save button")
-          event.preventDefault();
-          var newFormset = formset++;
-          console.log(formWrapper)
-          var newFormHtml = formWrapper.data('form').replace(/__prefix__/g, newFormset);
-          formWrapper.append(newFormHtml);
-          $('#id_trainingexercise_set-TOTAL_FORMS').val(formset);
-      });
-
-      formWrapper.on('click', '.remove-formset-row', function(event) {
-          console.log("remove button")
-          event.preventDefault();
-          $(this).closest('.formset-row').remove();
-          formset--;
-          $('#id_trainingexercise_set-TOTAL_FORMS').val(formset);
-      });
-  });
-  </script>
 {% endblock %}
