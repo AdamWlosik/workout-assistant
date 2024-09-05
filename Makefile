@@ -71,5 +71,10 @@ build_image: ## Zbuduj image
 logs: ## Wyswietl logi
 	cd src && docker compose logs -f
 
-# docker compose ps
-#docker compose down  docker compose up -d
+.PHONY: ps
+ps: ##
+	cd src && docker compose ps
+
+.PHONY: restart
+restart: ## Zrestartuj applikacje
+	cd src && docker compose down && docker compose up -d
