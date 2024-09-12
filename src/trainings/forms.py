@@ -6,7 +6,7 @@ from trainings.models import Category, Training, TrainingExercise
 
 
 class TrainingExerciseForm(forms.ModelForm):
-    reps = ArrayFormField(forms.CharField)
+    reps = ArrayFormField(forms.CharField)  # TODO Bartek sprawdź
 
     class Meta:
         model = TrainingExercise
@@ -17,8 +17,11 @@ class TrainingExerciseForm(forms.ModelForm):
             # "reps": JSONFormField(schema=schema)
             "exercise": forms.Select(attrs={"class": "form-control"}),
             # TODO wyswietla exercise wszystkich użytkowników, nie działa Save w edit_training,
-            #  nie działa Remove i Add Excercise
         }
+
+        def __init__(self, *args, **kwargs) -> None:
+            self.request = kwargs.pop("request")
+            super().__init__(*args, **kwargs)
 
 
 class TrainingForm(forms.ModelForm):
@@ -42,31 +45,32 @@ class TrainingForm(forms.ModelForm):
         self.fields["category"].queryset = Category.objects.all()
         # self.fields["exercises"].queryset = Exercise.objects.filter(user=self.request.user)
 
-        if self.instance.pk:
-            self.formset = TrainingExerciseFormSet(
-                data=self.formset_data,
-                instance=self.instance,
-                queryset=TrainingExercise.objects.filter(training=self.instance),
-            )
-        else:
-            self.formset = TrainingExerciseFormSet(
-                data=self.formset_data, instance=self.instance, queryset=TrainingExercise.objects.none()
-            )
-
-    def is_valid(self):  # noqa: ANN201 # TODO Missing return type annotation for public function `is_valid`
-        return super().is_valid() and self.formset.is_valid()
-
-    def save(self, commit: bool = True):  # noqa: ANN201 FBT002 FBT001
-        instance = super().save(commit=False)
-        if commit:
-            instance.save()
-            self.save_m2m()
-            training_exercises = self.formset.save(commit=False)
-            for training_exercise in training_exercises:
-                training_exercise.training = instance
-                training_exercise.save()
-            self.formset.save_m2m()
-        return instance
+    #
+    #     if self.instance.pk:
+    #         self.formset = TrainingExerciseFormSet(
+    #             data=self.formset_data,
+    #             instance=self.instance,
+    #             queryset=TrainingExercise.objects.filter(training=self.instance),
+    #         )
+    #     else:
+    #         self.formset = TrainingExerciseFormSet(
+    #             data=self.formset_data, instance=self.instance, queryset=TrainingExercise.objects.none()
+    #         )
+    #
+    # def is_valid(self):  # noqa: ANN201 # TODO Missing return type annotation for public function `is_valid`
+    #     return super().is_valid() and self.formset.is_valid()
+    #
+    # def save(self, commit: bool = True):  # noqa: ANN201 FBT002 FBT001
+    #     instance = super().save(commit=False)
+    #     if commit:
+    #         instance.save()
+    #         self.save_m2m()
+    #         training_exercises = self.formset.save(commit=False)
+    #         for training_exercise in training_exercises:
+    #             training_exercise.training = instance
+    #             training_exercise.save()
+    #         self.formset.save_m2m()
+    #     return instance
 
 
 TrainingExerciseFormSet = inlineformset_factory(

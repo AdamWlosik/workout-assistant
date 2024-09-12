@@ -50,14 +50,15 @@ def exercise_edit(request: "HttpRequest", exercise_id: int) -> "HttpResponse":
             return redirect("exercises")
     else:
         form = ExerciseForm(instance=exercise)
-    return render(request, "exercises/exercise_form.html", {"form": form})
+    return render(request, "exercises/exercise_form_old.html", {"form": form})
 
 
 @login_required
 def exercise_delete(request: "HttpRequest", exercise_id: int) -> "HttpResponse":
     """Function to display view to delete an existing exercise"""
     exercise = get_object_or_404(Exercise, id=exercise_id, user=request.user)
-    if request.method == "POST":
+    if request.method == "GET":
+        return render(request, "exercises/exercise_confirm_delete.html", {"exercise": exercise})
+    elif request.method == "POST":
         exercise.delete()
         return redirect("exercises")
-    return render(request, "exercises/exercise_confirm_delete.html", {"exercise": exercise})
