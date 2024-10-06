@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Training</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div id="hx-training-exercise-add">
+    </div>
+  <a class="btn btn-main" hx-get="{% url 'hx-training-exercise-add' training.id %}" hx-target="#hx-training-exercise-add">Add Exercise</a>
+
+  <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
+    <button type="submit" class="btn btn-main">Save</button>
+  </form>
+{% endblock %}

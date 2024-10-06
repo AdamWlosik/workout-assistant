@@ -5,23 +5,23 @@
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    {{ formset.management_form }}
-    <div id="formset">
-      {% for subform in formset %}
-        <div class="formset-row">
-          {{ subform.id }}
-          {{ subform.exercise }}
-          {{ subform.reps }}
-          <button type="button" class="remove-formset-row">Remove</button>
-        </div>
-      {% endfor %}
-    </div>
+{#    {{ formset.management_form }}#}
+{#    <div id="formset">#}
+{#      {% for subform in formset %}#}
+{#        <div class="formset-row">#}
+{#          {{ subform.id }}#}
+{#          {{ subform.exercise }}#}
+{#          {{ subform.reps }}#}
+{#          <button type="button" class="remove-formset-row">Remove</button>#}
+{#        </div>#}
+{#      {% endfor %}#}
+{#    </div>#}
 {#    <button type="button" id="add-exercise">Add Exercise</button>#}
-    <button type="submit" class="btn btn-main">Save</button>
+  <button type="submit" class="btn btn-main">Next</button>
   </form>
   <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
 {% endblock %}
 
-{% block scripts %}
-  {{ formset.media }}
-{% endblock %}
+{#{% block scripts %}#}
+{#  {{ formset.media }}#}
+{#{% endblock %}#}

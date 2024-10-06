@@ -1,0 +1,6 @@
+<h2>Name: {{ exercise.name }}</h2>
+<p>Description: {{ exercise.description }}</p>
+<p>Category: {{ exercise.get_category_display }}</p>
+<p>Exercises: {{ exercise.exercises }}</p>
+<a class="btn btn-main" hx-get="{% url 'exercise_edit' exercise.id %}">Edit</a>
+<a class="btn btn-main" hx-get="{% url 'exercises' %}">Back to list</a>
