@@ -1,1 +1,7 @@
-{% for exercise in training.exercises %}
+{% for relation in training_exercises %}
+    <li class="white-font" > {{ relation.exercise.name }} - Reps: {{ relation.reps }} Relation id: {{ relation.id }}
+        <button class="btn btn-second" hx-post="{% url 'hx-training-exercise-delete' relation.id relation.training.id %}">Delete</button>
+    </li>
+  {% endfor %}
+
+
