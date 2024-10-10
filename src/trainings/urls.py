@@ -11,12 +11,16 @@ urlpatterns = [
 ]
 urlpatterns += [
     path(
-        "<int:training_id>/hx-training-exercise-list", hx_views.hx_training_exercise_list, name="hx-training-exercise-list"
+        "<int:training_id>/hx-training-exercise-list",
+        hx_views.hx_training_exercise_list,
+        name="hx-training-exercise-list",
     ),
     path(
         "<int:training_id>/hx-training-exercise-add", hx_views.hx_training_exercise_add, name="hx-training-exercise-add"
     ),
-    path("<int:relation_id>/<int:training_id>/hx-training-exercise-delete", hx_views.hx_training_exercise_delete, name="hx-training-exercise-delete"
-         )
-
+    path(
+        "<int:relation_id>/<int:training_id>/hx-training-exercise-delete",
+        hx_views.hx_training_exercise_delete,
+        name="hx-training-exercise-delete",
+    ),
 ]

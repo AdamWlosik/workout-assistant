@@ -8,14 +8,15 @@ from trainings.forms import TrainingExerciseForm
 from trainings.models import Training, TrainingExercise
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 def hx_training_exercise_list(request: "HttpRequest", training_id: int) -> "HttpResponse":
     training_exercises = TrainingExercise.objects.filter(training_id=training_id)
     return render(request, "trainings/hx_training_exercise_list.html", {"training_exercises": training_exercises})
 
+
 @login_required
 def hx_training_exercise_add(request: "HttpRequest", training_id: int) -> "HttpResponse":
-
     # Fetch the training object, ensuring it belongs to the logged-in user
     training = get_object_or_404(Training, id=training_id, user=request.user)
 
@@ -37,6 +38,7 @@ def hx_training_exercise_add(request: "HttpRequest", training_id: int) -> "HttpR
     # Render the template with the form
     return render(request, "trainings/hx_training_exercise_form.html", {"form": form, "training": training})
 
+
 @login_required
 def hx_training_exercise_delete(request: "HttpRequest", relation_id: int, training_id: int) -> "HttpResponse":
     training = get_object_or_404(Training, id=training_id, user=request.user)
@@ -47,8 +49,3 @@ def hx_training_exercise_delete(request: "HttpRequest", relation_id: int, traini
         response.headers["HX-Trigger"] = "reload_list"
         return response
     return HttpResponse(status=405)
-    # else:
-    #     # If the request is not POST, render the form with the current training instance
-    #     form = TrainingExerciseForm(instance=training)
-    # return render(request, "trainings/training_edit.html", {"form": form, "training": training})
-# TODO Bartek pytanie jak powinna wyglądać opcja zwracana prze else
