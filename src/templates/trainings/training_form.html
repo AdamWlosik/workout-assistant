@@ -1,54 +1,27 @@
-{% extends "_base.html" %}
+{#{% extends "_base.html" %}#}
+{##}
+{#{% block content %}#}
+{#  <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Training</h2>#}
+{#  <form method="post">#}
+{#    {% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#  <button type="submit" class="btn btn-main">Next</button>#}
+{#  </form>#}
+{#  <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>#}
+{#{% endblock %}#}
 
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
   <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Training</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    {{ formset.management_form }}
-    <div id="formset">
-    <form method="post">
-      {% for subform in formset %}
-        <div class="formset-row">
-          {{ subform.id }}
-          {{ subform.exercise }}
-          {{ subform.reps }}
-          <button type="button" class="remove-formset-row">Remove</button>
-        </div>
-      {% endfor %}
-    </form>
+    <div class="row white-font">
+    <div class="col-md-6">
+      <form method="post">
+        {% csrf_token %}
+        {% crispy form %}
+      <button type="submit" class="btn btn-main">Next</button>
+      </form>
+      <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
     </div>
-    <button type="button" id="add-exercise">Add Exercise</button>
-    <button type="submit" class="btn btn-main">Save</button>
-  </form>
-  <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
-{% endblock %}
-
-{% block scripts %}
-  {{ formset.media }}
-  <script>
-  $(document).ready(function() {
-      var formset = $('#id_trainingexercise_set-TOTAL_FORMS').val();
-      var addButton = $('#add-exercise');
-      var formWrapper = $('#formset');
-
-      addButton.on('click', function(event) {
-          console.log("save button")
-          event.preventDefault();
-          var newFormset = formset++;
-          console.log(formWrapper)
-          var newFormHtml = formWrapper.data('form').replace(/__prefix__/g, newFormset);
-          formWrapper.append(newFormHtml);
-          $('#id_trainingexercise_set-TOTAL_FORMS').val(formset);
-      });
-
-      formWrapper.on('click', '.remove-formset-row', function(event) {
-          console.log("remove button")
-          event.preventDefault();
-          $(this).closest('.formset-row').remove();
-          formset--;
-          $('#id_trainingexercise_set-TOTAL_FORMS').val(formset);
-      });
-  });
-  </script>
+    </div>
 {% endblock %}

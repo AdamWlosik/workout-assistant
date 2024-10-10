@@ -1,7 +1,7 @@
 from django.conf import settings
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django_jsonform.models.fields import ArrayField
 from exercises.models import Exercise
 
 
@@ -38,8 +38,6 @@ class Training(models.Model):
 class TrainingExercise(models.Model):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    # reps = models.CharField(max_length=50, blank=True, verbose_name=_("Reps (e.g., 10kg x 12)"))
-    # TODO ArrayFields
     reps = ArrayField(models.CharField(max_length=50, blank=True, verbose_name=_("Reps (e.g., '10kg x 12')")))
 
     def __str__(self) -> str:

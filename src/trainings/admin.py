@@ -5,6 +5,7 @@ from trainings.models import Category, Training, TrainingExercise
 
 class ExerciseInline(admin.TabularInline):
     model = Training.exercises.through
+    extra = 0
 
 
 @admin.register(Category)

@@ -1,0 +1,7 @@
+<h2>Confirm Delete</h2>
+  <p>Are you sure you want to delete "{{ exercise.name }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-main">Confirm</button>
+  </form>
+  <a class="btn btn-main" hx-get="{% url 'exercises' %}">Cancel</a>

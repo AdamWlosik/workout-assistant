@@ -7,24 +7,24 @@ help:  ## Display this help
 shell:  ## Uruchom shell poetry
 	poetry shell
 
-.PHONY: migrations
-migrations: ## Utwórz migracie
-	@ (cd src && python manage.py makemigrations)
-
-.PHONY: migrate
-migrate: ## Zmigruj baze
-	cd src && python manage.py migrate
-
-.PHONY: migall
-migall: migrations migrate ## Utwórz migracie i zmigruj baze
+#.PHONY: migrations
+#migrations: ## Utwórz migracie
+#	@ (cd src && python manage.py makemigrations)
+#
+#.PHONY: migrate
+#migrate: ## Zmigruj baze
+#	cd src && python manage.py migrate
+#
+#.PHONY: migall
+#migall: migrations migrate ## Utwórz migracie i zmigruj baze
 
 .PHONY: test
 test: ## Uruchom test
 	cd src && python manage.py test
 
-.PHONY: run
-run: ## Uruchom aplikacje
-	cd src && python manage.py runserver
+#.PHONY: run
+#run: ## Uruchom aplikacje
+#	cd src && python manage.py runserver
 
 #.PHONY: createapp
 #createapp: ## Utwórz nowa aplikacje w projekcie
@@ -40,30 +40,41 @@ createapp: ## Utwórz nowa aplikacje w projekcie
 	&& cd src && python manage.py startapp $${APP_NAME} \
 	&& echo "createdapp: $${APP_NAME}"
 
-.PHONY: logs
-logs: ## Idź za logami dockera
-	docker compose logs -f
+#.PHONY: logs
+#logs: ## Idź za logami dockera
+#	docker compose logs -f
 
 .PHONY: shell-web
 shell-web: ## Idź do shella serwisu web
 	docker compose exec web /bin/sh
 
-.PHONY: docker-migrations
-docker-migrations: ## Utwórz migracie
+.PHONY: migrations
+migrations: ## Utwórz migracie
 	@ (cd src && docker compose exec web python manage.py makemigrations)
 
-.PHONY: docker-migrate
-docker-migrate: ## Zmigruj baze
+.PHONY: migrate
+migrate: ## Zmigruj baze
 	cd src && docker compose exec web python manage.py migrate
 
-.PHONY: docker-run
-docker-run: ## Uruchom aplikacje
-	cd src && docker compose up -d
+.PHONY: migall
+migall: migrations migrate ## Utwórz migracie i zmigruj baze
 
-.PHONY: docker-build_image
-docker-build_image: ## Zbuduj image
+.PHONY: run
+run: ## Uruchom aplikacje
+	cd src && docker compose up
+
+.PHONY: build_image
+build_image: ## Zbuduj image
 	cd src && docker compose build
 
-.PHONY: docker-logs
-docker-logs: ## Wyswietl logi
+.PHONY: logs
+logs: ## Wyswietl logi
 	cd src && docker compose logs -f
+
+.PHONY: ps
+ps: ##
+	cd src && docker compose ps
+
+.PHONY: restart
+restart: ## Zrestartuj applikacje
+	cd src && docker compose down && docker compose up
