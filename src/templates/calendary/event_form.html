@@ -1,11 +1,5 @@
 {% extends "_base.html" %}
 
 {% block content %}
-    <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Event</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-main">Save</button>
-        <a class="btn btn-main" href="{% url 'calendary_view' %}">Cancel</a>
-    </form>
+  {% include "calendary/hx_event_form.html" %}
 {% endblock %}

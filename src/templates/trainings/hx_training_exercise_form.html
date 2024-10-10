@@ -1,0 +1,9 @@
+<form hx-post="{% url "hx-training-exercise-add" training.id %}">
+    {{ form.exercise }}
+    {{ form.reps }}
+    {{ form.training_id }}
+    <input type="hidden" name="training_id" value="{{ training.id }}">
+    <button type="submit" class="btn btn-main">Save</button>
+</form>
+{{ form.media }}
+# TODO w form przekaż trening id

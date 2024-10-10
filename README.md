@@ -152,3 +152,6 @@ wcięcie tab nie 4 spacje
 22.08
 - problem z migracją, logi po zmienie z categories na categroy w trainings/models.py
 - nie da się utworzyć treniengu w Trainings List
+
+10.10
+- trainings/hx_views.py

@@ -1,0 +1,13 @@
+<h2>Name: {{ event.title }}</h2>
+<p>Description: {{ event.description }}</p>
+<p>Date: {{ event.date }}</p>
+{% for training in event.trainings.all %}
+    <p>Training: {{ training.name }}</p>
+{% endfor %}
+<a class="btn btn-main" hx-get="{% url 'event_edit' event.id %}">Edit</a>
+<a class="btn btn-main" hx-get="{% url 'calendary_view' %}">Back to list</a>
+<a class="btn btn-main" hx-get="{% url 'calendary_view' %}">Start training</a>
+<div id="training-detail">
+    {% include "trainings/training_event_detail.html" %}
+</div>
+

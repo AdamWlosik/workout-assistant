@@ -61,7 +61,7 @@ migall: migrations migrate ## Utwórz migracie i zmigruj baze
 
 .PHONY: run
 run: ## Uruchom aplikacje
-	cd src && docker compose up -d
+	cd src && docker compose up
 
 .PHONY: build_image
 build_image: ## Zbuduj image
@@ -77,4 +77,4 @@ ps: ##
 
 .PHONY: restart
 restart: ## Zrestartuj applikacje
-	cd src && docker compose down && docker compose up -d
+	cd src && docker compose down && docker compose up

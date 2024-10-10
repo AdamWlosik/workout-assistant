@@ -76,7 +76,7 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
 def event_detail(request: "HttpRequest", event_id: int) -> "HttpResponse":
     """Function tu display the details of a selected training"""
     event = get_object_or_404(Event, id=event_id, user=request.user)
-    return render(request, "calendary/event_detail.html", {"event": event})
+    return render(request, "calendary/event_detail_old.html", {"event": event})
 
 
 @login_required
