@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "bootstrap_datepicker_plus",
     "django_jsonform",
+    "crispy_forms",
+    "crispy_bootstrap5",
     "users",
     "trainings",
     "dashboard",
@@ -148,3 +150,7 @@ AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_REDIRECT_URL = "home"
 
 LOGOUT_REDIRECT_URL = "home"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

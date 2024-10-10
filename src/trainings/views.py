@@ -26,13 +26,6 @@ def training_detail(request: "HttpRequest", training_id: int) -> "HttpResponse":
 @login_required
 def training_create(request: "HttpRequest") -> "HttpResponse":
     if request.method == "POST":
-        pprint(request.POST)
-        """ <QueryDict: {'csrfmiddlewaretoken': ['b3x6medMJt5ZM8mrwSTGw6bYeRKHSYoKyh9I9ZxUUtctslhQH0NAtKAJwZTIipHS'], 
-        'is_active': ['on'], 'name': ['pull-ups training'], 'description': [''], 'category': ['2'], 
-        'trainingexercise_set-TOTAL_FORMS': ['1'], 'trainingexercise_set-INITIAL_FORMS': ['0'], 
-        'trainingexercise_set-MIN_NUM_FORMS': ['0'], 'trainingexercise_set-MAX_NUM_FORMS': ['1000'], 
-        'trainingexercise_set-0-id': [''], 'trainingexercise_set-0-exercise': ['7'], 'rjf§0': ['reps1'], 
-        'rjf§1': ['reps2'], 'trainingexercise_set-0-reps': ['["reps1","reps2"]']}>"""
         form = TrainingForm(request.POST, request=request, formset_data=request.POST)
         formset = TrainingExerciseFormSet(request.POST, instance=Training())
         if form.is_valid():
