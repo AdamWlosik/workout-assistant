@@ -57,6 +57,7 @@ class TrainingForm(forms.ModelForm):
             # TODO ustawić rowno
         )
 
+
 TrainingExerciseFormSet = inlineformset_factory(
     Training, TrainingExercise, form=TrainingExerciseForm, extra=1, can_delete=True, can_order=True
 )
