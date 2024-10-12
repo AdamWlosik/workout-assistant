@@ -110,6 +110,9 @@ wcięcie tab nie 4 spacje
 - przygotować dockerfile 
   - https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/ https://docs.djangoproject.com/en/5.0/howto/deployment/
 
+git commit -m "add" --no-verify 
+
+
 
 # TODO
 
