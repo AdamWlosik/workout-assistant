@@ -3,7 +3,7 @@ name: Deploy application to aws
 on:
   push:
     branches:
-      - "main"
+      - "develop"
 
 # TODO dodaj skrypt do generowania env
 
@@ -32,7 +32,10 @@ jobs:
           key: ${{ secrets.KEY_AWS }}
           port: ${{ secrets.PORT_AWS }}
           script: |
-            cd /home/ubuntu/workout-assistant/src 
+            cd /home/ubuntu/workout-assistant
+            git checkout develop
+            git pull origin develop
+            cd src
             docker compose build
             docker compose down 
             docker compose up -d
