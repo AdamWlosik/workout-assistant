@@ -1,0 +1,39 @@
+name: Deploy application to aws
+
+on:
+  push:
+    branches:
+      - "main"
+
+# TODO dodaj skrypt do generowania env
+
+jobs:
+#  build_and_push:
+#    name: Build and push docker image
+#    timeout-minutes: 10
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+  ssh_aws_and_rebuild:
+    name: Remount ssh and restart containers
+    environment: Main
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: ssh
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST_AWS }}
+          username: ${{ secrets.USERNAME_AWS }}
+          key: ${{ secrets.KEY_AWS }}
+          port: ${{ secrets.PORT_AWS }}
+          script: |
+            cd /home/ubuntu/workout-assistant/src 
+            docker compose build
+            docker compose down 
+            docker compose up -d
+            
