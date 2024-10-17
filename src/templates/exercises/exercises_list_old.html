@@ -1,7 +1,0 @@
-{% extends "_base.html" %}
-
-{% block content %}
-  <h2>My Exercises</h2>
-  <a class="btn btn-main" href="{% url 'exercise_create' %}">Create New Exercise</a>
-    {% include "exercises/_exercises_table.html" %}
-{% endblock %}

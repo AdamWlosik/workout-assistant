@@ -1,17 +1,24 @@
 {% extends "_base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-  <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Training</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-      <div id="hx-training-exercise-list" hx-get="{% url 'hx-training-exercise-list' training.id %}" hx-trigger="load, reload_list from:body">
-      </div>
-    <div id="hx-training-exercise-add">
-    </div>
-  <a class="btn btn-main" hx-get="{% url 'hx-training-exercise-add' training.id %}" hx-target="#hx-training-exercise-add">Add Exercise</a>
+    <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Training</h2>
+    <div class="row white-font">
+        <div class="col-md-6">
+            <form method="post">
+                {% csrf_token %}
+                {% crispy form %}
+                <div id="hx-training-exercise-list" hx-get="{% url 'hx-training-exercise-list' training.id %}"
+                     hx-trigger="load, reload_list from:body">
+                </div>
+                <div id="hx-training-exercise-add">
+                </div>
+                <a class="btn btn-main" hx-get="{% url 'hx-training-exercise-add' training.id %}"
+                   hx-target="#hx-training-exercise-add">Add Exercise</a>
 
-  <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
-    <button type="submit" class="btn btn-main">Save</button>
-  </form>
+                <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
+                <button type="submit" class="btn btn-main">Save</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
+

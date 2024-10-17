@@ -50,7 +50,7 @@ def exercise_edit(request: "HttpRequest", exercise_id: int) -> "HttpResponse":
             return redirect("exercises")
     else:
         form = ExerciseForm(instance=exercise)
-    return render(request, "exercises/exercise_form_old.html", {"form": form})
+    return render(request, "exercises/exercise_form.html", {"form": form})
 
 
 @login_required

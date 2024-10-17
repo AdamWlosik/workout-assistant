@@ -1,12 +1,12 @@
 import ast
-from pprint import pprint
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
 
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
 from exercises.models import Exercise
+
 from trainings.forms import TrainingExerciseForm
 from trainings.models import Training, TrainingExercise
-from django.contrib.auth.decorators import login_required
 
 
 @login_required
