@@ -1,5 +1,105 @@
 {% extends "_base.html" %}
 
 {% block content %}
-  {% include "calendary/hx_event_detail.html" %}
+    <h2>Name: {{ event.title }}</h2>
+    <p>Description: {{ event.description }}</p>
+    <p>Date: {{ event.date }}</p>
+    {% for training in event.trainings.all %}
+        <p>Training: {{ training.name }}</p>
+    {% endfor %}
+
+    <a class="btn btn-main" href="{% url 'event_edit' event.id %}">Edit</a>
+    <a class="btn btn-main" href="{% url 'calendary_view' %}">Back to list</a>
+    <a class="btn btn-main" href="{% url 'calendary_view' %}">Start training</a>
+
+    <div class="white-font" id="timer-container">
+        <h3 id="timer-display">Time: <span id="time">00:00</span></h3>
+        <div>
+            <label for="minutes">Set minutes:</label>
+            <input type="number" id="minutes" name="minutes" min="0" value="0">
+            <label for="seconds">Set seconds:</label>
+            <input type="number" id="seconds" name="seconds" min="0" max="59" value="0">
+        </div>
+
+        <div id="timer-buttons">
+            <button id="start-button" class="btn btn-success">Start</button>
+            <button id="stop-button" class="btn btn-danger" style="display:none;">Stop</button>
+            <button id="resume-button" class="btn btn-warning" style="display:none;">Resume</button>
+            <button id="reset-button" class="btn btn-secondary" style="display:none;">Reset</button>
+        </div>
+    </div>
+
+    {% include "trainings/training_event_detail.html" %}
+
+    {# JavaScript #}
+    <script>
+        let timerInterval; // Zmienna przechowująca identyfikator interwału timera
+        let remainingTime; // Zmienna przechowująca pozostały czas
+
+        // Obsługa zdarzenia kliknięcia na przycisk 'Start'
+        document.getElementById('start-button').addEventListener('click', function () {
+            // Odczytanie wartości minut i sekund z formularza
+            let minutes = parseInt(document.getElementById('minutes').value);
+            let seconds = parseInt(document.getElementById('seconds').value);
+
+            // Obliczenie całkowitego czasu w sekundach
+            remainingTime = (minutes * 60) + seconds;
+            startTimer(remainingTime); // Rozpoczęcie odliczania
+
+            // Ukrycie przycisku 'Start' i wyświetlenie przycisków 'Stop' oraz 'Reset'
+            document.getElementById('start-button').style.display = 'none';
+            document.getElementById('stop-button').style.display = 'inline-block';
+            document.getElementById('reset-button').style.display = 'inline-block';
+        });
+
+        // Obsługa zdarzenia kliknięcia na przycisk 'Stop'
+        document.getElementById('stop-button').addEventListener('click', function () {
+            clearInterval(timerInterval); // Zatrzymanie odliczania
+            document.getElementById('stop-button').style.display = 'none'; // Ukrycie przycisku 'Stop'
+            document.getElementById('resume-button').style.display = 'inline-block'; // Wyświetlenie przycisku 'Resume'
+        });
+
+        // Obsługa zdarzenia kliknięcia na przycisk 'Resume'
+        document.getElementById('resume-button').addEventListener('click', function () {
+            startTimer(remainingTime); // Wznawianie odliczania od pozostałego czasu
+            document.getElementById('resume-button').style.display = 'none'; // Ukrycie przycisku 'Resume'
+            document.getElementById('stop-button').style.display = 'inline-block'; // Wyświetlenie przycisku 'Stop'
+        });
+
+        // Obsługa zdarzenia kliknięcia na przycisk 'Reset'
+        document.getElementById('reset-button').addEventListener('click', function () {
+            clearInterval(timerInterval); // Zatrzymanie odliczania
+            remainingTime = 0; // Ustawienie pozostałego czasu na 0
+            document.getElementById('time').textContent = '00:00'; // Zresetowanie wyświetlanego czasu
+            // Przywrócenie widoczności przycisku 'Start' i ukrycie innych przycisków
+            document.getElementById('start-button').style.display = 'inline-block';
+            document.getElementById('stop-button').style.display = 'none';
+            document.getElementById('resume-button').style.display = 'none';
+            document.getElementById('reset-button').style.display = 'none';
+        });
+
+        // Funkcja do rozpoczęcia odliczania
+        function startTimer(duration) {
+            let timer = duration; // Ustawienie timera na podaną wartość
+            timerInterval = setInterval(function () {
+                let minutes = Math.floor(timer / 60); // Obliczenie pozostałych minut
+                let seconds = timer % 60; // Obliczenie pozostałych sekund
+
+                // Wyświetlenie czasu w formacie mm:ss
+                document.getElementById('time').textContent =
+                    (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+
+                if (--timer < 0) { // Sprawdzenie, czy czas się skończył
+                    clearInterval(timerInterval); // Zatrzymanie odliczania
+                    alert("Time's up!"); // Wyświetlenie komunikatu po zakończeniu
+                    // Przywrócenie przycisku "Start" oraz ukrycie innych przycisków
+                    document.getElementById('start-button').style.display = 'inline-block';
+                    document.getElementById('stop-button').style.display = 'none';
+                    document.getElementById('reset-button').style.display = 'none';
+                } else {
+                    remainingTime = timer; // Aktualizacja pozostałego czasu
+                }
+            }, 1000); // Ustawienie interwału na 1000 ms (1 sekunda)
+        }
+    </script>
 {% endblock %}

@@ -1,15 +1,16 @@
 {% extends "_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-  <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Training</h2>
+    <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Training</h2>
     <div class="row white-font">
-    <div class="col-md-6">
-      <form method="post">
-        {% csrf_token %}
-        {% crispy form %}
-      <button type="submit" class="btn btn-main">Next</button>
-      </form>
-      <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
-    </div>
+        <div class="col-md-6">
+            <form method="post">
+                {% csrf_token %}
+                {% crispy form %}
+                <button type="submit" class="btn btn-main">Save</button>
+                <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
+            </form>
+
+        </div>
     </div>
 {% endblock %}

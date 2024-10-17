@@ -77,4 +77,4 @@ ps: ##
 
 .PHONY: restart
 restart: ## Zrestartuj applikacje
-	cd src && docker compose down && docker compose up
+	cd src && docker compose down && docker compose up -d
