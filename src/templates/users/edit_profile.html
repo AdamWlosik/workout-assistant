@@ -1,11 +1,16 @@
 {% extends "_base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-  <h2>Edit Profile</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-main">Save changes</button>
-    <a class="btn btn-main" href="{% url 'profile_view' %}">Cancel</a>
-  </form>
+    <h2>Edit Profile</h2>
+    <div class="row white-font">
+        <div class="col-md-3">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {% crispy form %}
+                <button type="submit" class="btn btn-main">Save</button>
+                <a class="btn btn-main" href="{% url 'profile_view' %}">Cancel</a>
+            </form>
+        </div>
+    </div>
 {% endblock %}

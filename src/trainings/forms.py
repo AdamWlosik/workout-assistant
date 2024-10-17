@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Div
+from crispy_forms.layout import Div, Field, Layout
 from django import forms
 from django.forms import inlineformset_factory
 from django_jsonform.forms.fields import ArrayFormField
@@ -55,7 +55,15 @@ class TrainingForm(forms.ModelForm):
             Field("description", css_class="bg-dark"),
             InlineCheckboxes("category"),
             # TODO ustawić rowno
+            # ButtonHolder(
+            #     HTML('<a class="btn btn-main" href="{% url \'trainings\' %}">Cancel</a>'),
+            #     Submit('submit', 'Save', css_class='btn btn-main')
+            # )
         )
+
+        # https://stackoverflow.com/questions/30355040/submit-button-no-longer-works-with-django-crispy-forms
+        # https://django-crispy-forms.readthedocs.io/en/latest/form_helper.html
+        self.helper.form_tag = False
 
 
 TrainingExerciseFormSet = inlineformset_factory(

@@ -7,9 +7,10 @@
             <form method="post">
                 {% csrf_token %}
                 {% crispy form %}
-                <button type="submit" class="btn btn-main">Next</button>
+                <button type="submit" class="btn btn-main">Save</button>
+                <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
             </form>
-            <a class="btn btn-main" href="{% url 'trainings' %}">Cancel</a>
+
         </div>
     </div>
 {% endblock %}

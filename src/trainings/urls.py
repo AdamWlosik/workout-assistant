@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views, hx_views
+from . import hx_views, views
 
 urlpatterns = [
     path("", views.trainings_list, name="trainings"),
