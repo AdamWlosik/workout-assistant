@@ -42,6 +42,7 @@ def profile_view(request: HttpRequest) -> HttpResponse:
     profile, created = Profile.objects.get_or_create(user=request.user)
     return render(request, "users/profile_view.html", {"profile": profile})
 
+
 @login_required
 def login_view(request: HttpRequest) -> HttpResponse:
     """Function to display login view"""
@@ -56,4 +57,4 @@ def login_view(request: HttpRequest) -> HttpResponse:
             messages.error(request, "Invalid username or password")
     else:
         form = AuthenticationForm()
-    return render(request, 'users/login.html', {'form': form})
+    return render(request, "users/login.html", {"form": form})

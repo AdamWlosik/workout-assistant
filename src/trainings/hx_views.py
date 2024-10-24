@@ -50,6 +50,7 @@ def hx_training_exercise_delete(request: "HttpRequest", relation_id: int, traini
         return response
     return HttpResponse(status=405)
 
+
 @login_required
 def hx_training_exercise_edit(request: "HttpRequest", relation_id: int, training_id: int) -> "HttpResponse":
     training = get_object_or_404(Training, id=training_id, user=request.user)
@@ -71,5 +72,6 @@ def hx_training_exercise_edit(request: "HttpRequest", relation_id: int, training
     else:
         form = TrainingExerciseForm(instance=relation)
 
-    return render(request, "trainings/hx_training_exercise_form.html", {"form": form, "training": training, "relation": relation})
-
+    return render(
+        request, "trainings/hx_training_exercise_form.html", {"form": form, "training": training, "relation": relation}
+    )
