@@ -23,4 +23,9 @@ urlpatterns += [
         hx_views.hx_training_exercise_delete,
         name="hx-training-exercise-delete",
     ),
+    path(
+        "<int:relation_id>/<int:training_id>/hx-training-exercise-edit",
+        hx_views.hx_training_exercise_edit,
+        name="hx-training-exercise-edit",
+    ),
 ]

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import TrainingExerciseFormSet, TrainingForm
-from .models import Training
+from .models import Training, TrainingExercise
 
 if TYPE_CHECKING:
     from django.http import HttpRequest, HttpResponse

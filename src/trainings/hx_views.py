@@ -49,3 +49,27 @@ def hx_training_exercise_delete(request: "HttpRequest", relation_id: int, traini
         response.headers["HX-Trigger"] = "reload_list"
         return response
     return HttpResponse(status=405)
+
+@login_required
+def hx_training_exercise_edit(request: "HttpRequest", relation_id: int, training_id: int) -> "HttpResponse":
+    training = get_object_or_404(Training, id=training_id, user=request.user)
+    relation = get_object_or_404(TrainingExercise, id=relation_id, training=training)
+
+    if request.method == "POST":
+        exercises_id = request.POST.get("exercise")
+        reps = request.POST.get("reps")
+        reps_list = ast.literal_eval(reps.strip())
+
+        exercise = get_object_or_404(Exercise, id=exercises_id)
+        relation.exercise = exercise
+        relation.reps = reps_list
+        relation.save()
+
+        response = HttpResponse("")
+        response.headers["HX-Trigger"] = "reload_list"
+        return response
+    else:
+        form = TrainingExerciseForm(instance=relation)
+
+    return render(request, "trainings/hx_training_exercise_form.html", {"form": form, "training": training, "relation": relation})
+

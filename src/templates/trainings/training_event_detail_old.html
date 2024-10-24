@@ -1,0 +1,17 @@
+{% for training in event.trainings.all %}
+    <div class="card mb-4 mt-2">
+        <h5 class="card-header text-center">Training: {{ training.name }}
+            (<small>{{ training.get_category_display }}</small>)</h5>
+        <div class="card-body">
+            {% for training_exercise in training.trainingexercise_set.all %}
+                <div class="card mb-4 mt-2">
+                    <h5 class="card-header text-center">Exercise: {{ training_exercise.exercise.name }}
+                        (<small>{{ training_exercise.exercise.get_category_display }}</small>)</h5>
+                    <div class="card-body">
+                         ({{ training_exercise.reps }})
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
