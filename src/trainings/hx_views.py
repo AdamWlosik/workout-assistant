@@ -6,8 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from exercises.models import Exercise
 
 from trainings.forms import TrainingExerciseForm
-from trainings.models import Training, TrainingExercise
-
+from trainings.models import Training, TrainingExercis
 
 @login_required
 def hx_training_exercise_list(request: "HttpRequest", training_id: int) -> "HttpResponse":
@@ -56,9 +55,14 @@ def hx_training_exercise_edit(request: "HttpRequest", relation_id: int, training
     training = get_object_or_404(Training, id=training_id, user=request.user)
     relation = get_object_or_404(TrainingExercise, id=relation_id, training=training)
 
-    if request.method == "POST":
+    if request.method == "GET":
+        #TODO zwroc mu formularz tworzenia z uzupełnionymi values
+        form = TrainingExerciseForm(instance=training) #TODO przygotować initial (instance=training, initial=)
+    elif request.method == "POST":
+        # TODO if request.method == "GET"
         exercises_id = request.POST.get("exercise")
         reps = request.POST.get("reps")
+        pprint(request.POST)
         reps_list = ast.literal_eval(reps.strip())
 
         exercise = get_object_or_404(Exercise, id=exercises_id)
