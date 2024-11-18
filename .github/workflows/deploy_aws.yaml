@@ -3,7 +3,7 @@ name: Deploy application to aws
 on:
   push:
     branches:
-      - "main"
+      - "develop"
 
 # TODO dodaj skrypt do generowania env
 
@@ -33,8 +33,8 @@ jobs:
           port: ${{ secrets.PORT_AWS }}
           script: |
             cd /home/ubuntu/workout-assistant
-            git checkout main
-            git pull origin main
+            git checkout develop
+            git pull origin develop
             
             cat << EOF > .env.dev
 
