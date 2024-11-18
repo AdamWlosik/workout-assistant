@@ -1,4 +1,7 @@
+from django.contrib import messages
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -38,3 +41,20 @@ def profile_view(request: HttpRequest) -> HttpResponse:
     """Function to display user profile view"""
     profile, created = Profile.objects.get_or_create(user=request.user)
     return render(request, "users/profile_view.html", {"profile": profile})
+
+
+@login_required
+def login_view(request: HttpRequest) -> HttpResponse:
+    """Function to display login view"""
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, "Logged in successfully")
+            return redirect("home")
+        else:
+            messages.error(request, "Invalid username or password")
+    else:
+        form = AuthenticationForm()
+    return render(request, "users/login.html", {"form": form})

@@ -1,0 +1,69 @@
+name: Deploy application to aws
+
+on:
+  push:
+    branches:
+      - "develop"
+
+# TODO dodaj skrypt do generowania env
+
+jobs:
+#  build_and_push:
+#    name: Build and push docker image
+#    timeout-minutes: 10
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+  ssh_aws_and_rebuild:
+    name: Remount ssh and restart containers
+    environment: Main
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: ssh
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST_AWS }}
+          username: ${{ secrets.USERNAME_AWS }}
+          key: ${{ secrets.KEY_AWS }}
+          port: ${{ secrets.PORT_AWS }}
+          script: |
+            cd /home/ubuntu/workout-assistant
+            git checkout develop
+            git pull origin develop
+            
+            cat << EOF > .env.dev
+
+#            # System
+#            GIT_COMMIT=${{ github.sha }}
+#            RUN_NUMBER=${{ github.run_number }}
+#            BUILD_DATE=$(date '+%F-%H-%M-%S')
+#            APP_NAME=promax-crm
+#            ENVIRONMENT=${{ github.head_ref || github.ref_name }}
+# TODO Czy to mam też być dodane?
+
+            # django
+            DEBUG=${{ secrets.DEBUG }}
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+            DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}
+            
+            # database
+            DATABASE=${{ secrets.DATABASE }}
+            SQL_ENGINE=${{ secrets.SQL_ENGINE }}
+            SQL_HOST=${{ secrets.SQL_HOST }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            PGPORT=${{ secrets.PGPORT }}
+
+            EOF
+            
+            cd src
+            docker compose build
+            docker compose down 
+            docker compose up -d
+            
