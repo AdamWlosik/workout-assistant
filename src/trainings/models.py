@@ -17,6 +17,7 @@ class Training(models.Model):
     is_active = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
     description = models.TextField(default="", blank=True)
+    # TODO tutaj sortowanie
     exercises = models.ManyToManyField(
         Exercise,
         through="TrainingExercise",
@@ -25,7 +26,6 @@ class Training(models.Model):
         default="",
         blank=True,
     )
-    # TODO reps = ... ()kg x (), połączone z exercise czyli dodając excercise pojawia sie opcja dodania reps
     category = models.ManyToManyField(Category, verbose_name=_("Categories"), blank=True, related_name="trainings")
 
     def __str__(self) -> str:
@@ -42,3 +42,8 @@ class TrainingExercise(models.Model):
 
     def __str__(self) -> str:
         return f"{self.training.name} - {self.exercise.name}"
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']

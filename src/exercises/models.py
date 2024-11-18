@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -24,6 +25,10 @@ class Exercise(models.Model):
     is_active = models.BooleanField(default=True)
     description = models.TextField(default="", blank=True)
     category = models.CharField(max_length=100, choices=CategoryChoices)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.name
+
+    class Meta:
+        ordering = ["created_at"]

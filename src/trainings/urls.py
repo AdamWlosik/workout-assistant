@@ -28,4 +28,9 @@ urlpatterns += [
         hx_views.hx_training_exercise_edit,
         name="hx-training-exercise-edit",
     ),
+    path(
+        "<int:relation_id>/<int:training_id>/rep/<int:rep_index>",
+        hx_views.hx_training_exercise_rep_edit,
+        name="hx-training-exercise-rep-edit",
+    ),
 ]

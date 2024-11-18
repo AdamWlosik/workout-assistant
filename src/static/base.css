@@ -114,10 +114,15 @@ ul {
 }
 
 .bg-dark {
-    background-color: rgb(47, 45, 45) !important;
+    background-color: rgb(42, 50, 65) !important;
     color: white !important;
+    border-color: #404a65;
 }
 
 .form-check-input {
     background-color: unset !important;
+}
+
+.bd-dark-header {
+    border-bottom: 1px solid #404a65;
 }
