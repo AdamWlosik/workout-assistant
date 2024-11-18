@@ -35,6 +35,33 @@ jobs:
             cd /home/ubuntu/workout-assistant
             git checkout develop
             git pull origin develop
+            
+            cat << EOF > .env.dev
+
+#            # System
+#            GIT_COMMIT=${{ github.sha }}
+#            RUN_NUMBER=${{ github.run_number }}
+#            BUILD_DATE=$(date '+%F-%H-%M-%S')
+#            APP_NAME=promax-crm
+#            ENVIRONMENT=${{ github.head_ref || github.ref_name }}
+# TODO Czy to mam też być dodane?
+
+            # django
+            DEBUG=${{ secrets.DEBUG }}
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+            DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}
+            
+            # database
+            DATABASE=${{ secrets.DATABASE }}
+            SQL_ENGINE=${{ secrets.SQL_ENGINE }}
+            SQL_HOST=${{ secrets.SQL_HOST }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            PGPORT=${{ secrets.PGPORT }}
+
+            EOF
+            
             cd src
             docker compose build
             docker compose down 

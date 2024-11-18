@@ -3,5 +3,5 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-main">Save</button>
-    <a class="btn btn-main" hx-get="{% url 'calendary_view' %}">Cancel</a>
+    <a class="btn btn-main" href="{% url 'calendary_view' %}">Cancel</a>
 </form>

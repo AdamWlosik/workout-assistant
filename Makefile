@@ -78,3 +78,24 @@ ps: ##
 .PHONY: restart
 restart: ## Zrestartuj applikacje
 	cd src && docker compose down && docker compose up -d
+
+##@ Backup / Restore
+BACKUP = _backup_
+   dummy_backup := $(shell mkdir -p $(BACKUP))
+CURRENT_DATE=`date "+%F-%H-%M-%S"`
+
+
+.PHONY: backup-db
+backup-db: ## backup current state of database
+	@ (docker compose exec -T -u postgres db pg_dump -U hello_django hello_django_dev | gzip > _backup_/db-$(CURRENT_DATE).sql.gz)
+
+.PHONY: restore-db
+restore-db: ## restore database from file
+	@read -p "Filename: " BACKUP_FILE \
+	&& [ -f "_backup_/$${BACKUP_FILE}" ] \
+	&& (docker compose down) \
+	&& docker volume rm workout-assistant_postgres_data || true \
+	&& (docker compose up -d db) \
+	&& sleep 5 \
+	&& zcat "_backup_/$${BACKUP_FILE}" | docker compose exec -T -u postgres db psql -U hello_django -d hello_django_dev \
+	&& docker compose down && docker compose up -d
