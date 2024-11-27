@@ -8,6 +8,13 @@ on:
 # TODO dodaj skrypt do generowania env
 
 jobs:
+#  build_and_push:
+#    name: Build and push docker image
+#    timeout-minutes: 10
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
   ssh_aws_and_rebuild:
     name: Remount ssh and restart containers
     environment: Main
@@ -30,13 +37,6 @@ jobs:
             git pull origin develop
             
             cat << EOF > .env.dev
-#            # System
-#            GIT_COMMIT=${{ github.sha }}
-#            RUN_NUMBER=${{ github.run_number }}
-#            BUILD_DATE=$(date '+%F-%H-%M-%S')
-#            APP_NAME=promax-crm
-#            ENVIRONMENT=${{ github.head_ref || github.ref_name }}
-# TODO Czy to mam też być dodane?
 
             # django
             DEBUG=${{ secrets.DEBUG }}
@@ -58,3 +58,4 @@ jobs:
             docker compose build
             docker compose down 
             docker compose up -d
+
