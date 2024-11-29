@@ -38,14 +38,6 @@ jobs:
             
             cat << EOF > .env.dev
 
-#            # System
-#            GIT_COMMIT=${{ github.sha }}
-#            RUN_NUMBER=${{ github.run_number }}
-#            BUILD_DATE=$(date '+%F-%H-%M-%S')
-#            APP_NAME=promax-crm
-#            ENVIRONMENT=${{ github.head_ref || github.ref_name }}
-# TODO Czy to mam też być dodane?
-
             # django
             DEBUG=${{ secrets.DEBUG }}
             SECRET_KEY=${{ secrets.SECRET_KEY }}
@@ -66,4 +58,4 @@ jobs:
             docker compose build
             docker compose down 
             docker compose up -d
-            
+
