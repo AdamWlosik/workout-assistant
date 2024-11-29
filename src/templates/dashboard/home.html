@@ -1,0 +1,21 @@
+{% extends '_base.html' %}
+
+{% block title %}Home{% endblock %}
+{% load static %}
+
+{% block content %}
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.email }}!</p>
+            <div class="row img-fluid w-25">
+                <img src="{% static 'home_gif/workout-gym.gif' %}" alt="Workout GIF">
+            </div>
+            <div class="row">
+                {% include "dashboard/_summary.html" %}
+            </div>
+        {% else %}
+            <p>Welcome, to workout assistant app!</p>
+            <img src="{% static 'home_gif/workout-gym.gif' %}" alt="Workout GIF" height="100px">
+        {% endif %}
+    </div>
+{% endblock %}
