@@ -36,6 +36,7 @@ class Training(models.Model):
 
 
 class TrainingExercise(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     reps = ArrayField(models.CharField(max_length=50, blank=True, verbose_name=_("Reps (e.g., '10kg x 12')")))
