@@ -33,4 +33,8 @@ urlpatterns += [
         hx_views.hx_training_exercise_rep_edit,
         name="hx-training-exercise-rep-edit",
     ),
+    path(
+        "hx-training-exercise-rep-add/<int:relation_id>/<int:training_id>/",
+        hx_views.hx_training_exercise_rep_add,
+        name="hx-training-exercise-rep-add"),
 ]

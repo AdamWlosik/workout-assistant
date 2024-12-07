@@ -73,6 +73,23 @@ def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, trai
         return HttpResponse(rep_edit)
 
 
+@login_required
+def hx_training_exercise_rep_add(request: "HttpRequest", relation_id: int, training_id: int) -> "HttpResponse":
+    training_exercise = get_object_or_404(TrainingExercise, id=relation_id, training_id=training_id)
+
+    if request.method == "GET":
+        # Zwróć prosty formularz do dodania nowego powtórzenia
+        return render(request, "trainings/hx_training_exercise_rep_add.html",
+                      {"relation_id": relation_id, "training_id": training_id})
+    elif request.method == "POST":
+        # Dodaj nowe powtórzenie
+        new_rep = request.POST.get("rep_value")
+        if new_rep:
+            training_exercise.reps.append(new_rep)  # Dodaj nowe powtórzenie
+            training_exercise.save()
+        return HttpResponse(new_rep)
+
+
 # TODO dokończ widok edycji treningu całego
 @login_required
 def hx_training_exercise_edit(request: "HttpRequest", relation_id: int, training_id: int) -> "HttpResponse":

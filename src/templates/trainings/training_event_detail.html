@@ -7,14 +7,21 @@
                 <div class="card mb-4 mt-2 bg-dark">
                     <h5 class="card-header text-center bd-dark-header">Exercise: {{ training_exercise.exercise.name }}
                         (<small>{{ training_exercise.exercise.get_category_display }}</small>)</h5>
-                    <div class="card-body">
-                    <div class="d-flex justify-content-around">
-                        {% for rep in training_exercise.reps %}
-                            <div class="btn btn-outline-light" hx-get="{% url "hx-training-exercise-rep-edit" training_exercise.id training_exercise.training.id forloop.counter0 %}">
-                                {{ rep }}
-                            </div>
-                        {% endfor %}
+                    <div>
+                        <button class="btn btn-success"
+                                hx-get="{% url 'hx-training-exercise-rep-add' training_exercise.id training_exercise.training.id %}">
+                            + Add Rep
+                        </button>
                     </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-around">
+                            {% for rep in training_exercise.reps %}
+                                <div class="btn btn-outline-light"
+                                     hx-get="{% url "hx-training-exercise-rep-edit" training_exercise.id training_exercise.training.id forloop.counter0 %}">
+                                    {{ rep }}
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}
