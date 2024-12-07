@@ -2,9 +2,11 @@ import calendar as cal
 import datetime
 from typing import TYPE_CHECKING
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
+from django.http import HttpResponse
 
 from calendary.forms import EventForm
 
@@ -29,7 +31,8 @@ def calendar_view(request: "HttpRequest") -> "HttpResponse":
 
     events = []
     for week in month_days:
-        week_events = [(day, Event.objects.filter(date__year=year, date__month=month)) for day in week]
+        week_events = [(day, Event.objects.filter(date__year=year, date__month=month, user=request.user)) for day in
+                       week]
         events.append(week_events)
     # TODO (przyszła optymalizacja) day jako datetime object
 
@@ -55,7 +58,7 @@ def calendar_view(request: "HttpRequest") -> "HttpResponse":
 def add_event(request: "HttpRequest") -> "HttpResponse":
     day_params = request.GET.get("day")
     if request.method == "POST":
-        form = EventForm(request.POST)
+        form = EventForm(request.POST, user=request.user)
         if form.is_valid():
             event = form.save(commit=False)
             event.user = request.user
@@ -68,7 +71,7 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
             initial_data["date"] = datetime.datetime.strptime(day_params, "%Y-%m-%d").astimezone(datetime.timezone.utc)
             # initial_data["date"] = datetime.strptime(day_params, "%Y-%m-%d").date()
             #  TODO DTZ007 Naive datetime constructed using `datetime.datetime.strptime()` without %z
-        form = EventForm(initial=initial_data)
+        form = EventForm(initial=initial_data, user=request.user)
     return render(request, "calendary/event_form.html", {"form": form})
 
 
@@ -93,3 +96,18 @@ def event_edit(request: "HttpRequest", event_id: int) -> "HttpResponse":
     else:
         form = EventForm(instance=event)
     return render(request, "calendary/event_form.html", {"form": form})
+
+
+@login_required
+def mark_done(request: "HttpRequest", event_id: int) -> "HttpResponse":
+    if request.method == "POST":
+        event = get_object_or_404(Event, id=event_id, user=request.user)
+        if event.is_done:
+            messages.success(request, "Training undone")
+            event.is_done = False
+        else:
+            messages.success(request, "Training done")
+            event.is_done = True
+        event.save()
+
+    return redirect("event_detail", event_id=event_id)
