@@ -99,3 +99,7 @@ restore-db: ## restore database from file
 	&& sleep 5 \
 	&& zcat "_backup_/$${BACKUP_FILE}" | docker compose exec -T -u postgres db psql -U hello_django -d hello_django_dev \
 	&& docker compose down && docker compose up -d
+
+.PHONY: shell-db
+shell-db: ## open postgres shell
+	@ (docker compose exec db psql -U hello_django hello_django_dev)

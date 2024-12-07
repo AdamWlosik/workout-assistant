@@ -25,8 +25,8 @@ def hx_training_exercise_add(request: "HttpRequest", training_id: int) -> "HttpR
         exercises_id = request.POST.get("exercise")
         reps = request.POST.get("reps")
         reps_list = ast.literal_eval(reps.strip())
-        exercise = get_object_or_404(Exercise, id=exercises_id)
-        relation = TrainingExercise(exercise=exercise, training=training, reps=reps_list)
+        exercise = get_object_or_404(Exercise, id=exercises_id, user=request.user)
+        relation = TrainingExercise(exercise=exercise, training=training, reps=reps_list, user=request.user)
         relation.save()
         # return render(request, "trainings/hx_training_exercise_list.html", {"training": training})
         response = HttpResponse("")
@@ -34,7 +34,7 @@ def hx_training_exercise_add(request: "HttpRequest", training_id: int) -> "HttpR
         return response
     else:
         # If the request is not POST, render the form with the current training instance
-        form = TrainingExerciseForm(instance=training)
+        form = TrainingExerciseForm(instance=training, user=request.user)
 
     # Render the template with the form
     return render(request, "trainings/hx_training_exercise_form.html", {"form": form, "training": training})

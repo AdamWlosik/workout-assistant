@@ -5,11 +5,17 @@ from django import forms
 from django.forms import inlineformset_factory
 from django_jsonform.forms.fields import ArrayFormField
 
+from exercises.models import Exercise
 from trainings.models import Category, Training, TrainingExercise
 
 
 class TrainingExerciseForm(forms.ModelForm):
+    def __init__(self, *args, user=None, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.fields["exercise"].queryset = Exercise.objects.filter(user=user)
+
     reps = ArrayFormField(forms.CharField)  # TODO Bartek sprawdź
+
 
     class Meta:
         model = TrainingExercise
@@ -19,12 +25,8 @@ class TrainingExerciseForm(forms.ModelForm):
             # my_field = JSONFormField(schema=schema)
             # "reps": JSONFormField(schema=schema)
             "exercise": forms.Select(attrs={"class": "form-control"}),
-            # TODO wyswietla exercise wszystkich użytkowników, nie działa Save w edit_training,
+            # TODO wyswietla exercise wszystkich użytkowników
         }
-
-        def __init__(self, *args, **kwargs) -> None:
-            self.request = kwargs.pop("request")
-            super().__init__(*args, **kwargs)
 
 
 class TrainingForm(forms.ModelForm):

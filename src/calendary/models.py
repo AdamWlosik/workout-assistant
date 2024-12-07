@@ -6,6 +6,7 @@ from trainings.models import Training
 
 
 class Event(models.Model):
+    is_done = models.BooleanField(default=False)
     title = models.CharField(max_length=100)
     description = models.TextField()
     date = models.DateField()

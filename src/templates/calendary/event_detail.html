@@ -10,7 +10,16 @@
 
     <a class="btn btn-main" href="{% url 'event_edit' event.id %}">Edit</a>
     <a class="btn btn-main" href="{% url 'calendary_view' %}">Back to list</a>
-    <a class="btn btn-main" href="{% url 'calendary_view' %}">Start training</a>
+    <form method="POST" action="{% url 'mark_done' event.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-main">
+            {% if not event.is_done %}
+                Done
+            {% else %}
+                Undone
+            {% endif %}
+        </button>
+    </form>
 
     <div class="white-font" id="timer-container">
         <h3 id="timer-display">Time: <span id="time">00:00</span></h3>
