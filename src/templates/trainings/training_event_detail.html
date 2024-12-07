@@ -9,15 +9,17 @@
                         (<small>{{ training_exercise.exercise.get_category_display }}</small>)</h5>
                     <div>
                         <button class="btn btn-success"
-                                hx-get="{% url 'hx-training-exercise-rep-add' training_exercise.id training_exercise.training.id %}">
+                                hx-get="{% url 'hx-training-exercise-rep-add' training_exercise.id training_exercise.training.id %}"
+                                hx-target="this"
+                                hx-swap="outerHTML">
                             + Add Rep
                         </button>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-around">
+                        <div id="reps-list-{{ training_exercise.id }}" class="d-flex justify-content-around">
                             {% for rep in training_exercise.reps %}
                                 <div class="btn btn-outline-light"
-                                     hx-get="{% url "hx-training-exercise-rep-edit" training_exercise.id training_exercise.training.id forloop.counter0 %}">
+                                     hx-get="{% url 'hx-training-exercise-rep-edit' training_exercise.id training_exercise.training.id forloop.counter0 %}">
                                     {{ rep }}
                                 </div>
                             {% endfor %}
