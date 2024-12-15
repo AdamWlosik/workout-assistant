@@ -1,13 +1,19 @@
 import ast
+import json
+from datetime import datetime, timedelta
 from pprint import pprint
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import get_object_or_404, render
+
+from calendary.models import Event
 from exercises.models import Exercise
 
 from trainings.forms import TrainingExerciseForm
 from trainings.models import Training, TrainingExercise
+from trainings.services import update_reps_history, update_reps
 
 
 @login_required
@@ -52,9 +58,32 @@ def hx_training_exercise_delete(request: "HttpRequest", relation_id: int, traini
     return HttpResponse(status=405)
 
 
+# @login_required
+# def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, training_id: int,
+#                                   rep_index: int) -> "HttpResponse":
+#     print(f"{relation_id=} {training_id=} {rep_index=}")
+#     context = {
+#         "relation_id": relation_id,
+#         "training_id": training_id,
+#         "rep_index": rep_index,
+#     }
+#     if request.method == "GET":
+#         return render(request, "trainings/hx_training_exercise_rep_edit.html", context=context)
+#     elif request.method == "POST":
+#         print(request.POST)
+#         rep_edit = request.POST.get("rep_edit")
+#         print(rep_edit)
+#         training_exercise = get_object_or_404(TrainingExercise, id=relation_id)
+#         training_exercise.reps[rep_index] = rep_edit
+#         training_exercise.is_done = False
+#         training_exercise.save()
+#         print(training_exercise.reps)
+#         return HttpResponse(rep_edit)
+
 @login_required
 def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, training_id: int,
                                   rep_index: int) -> "HttpResponse":
+    """Edycja repsa """
     print(f"{relation_id=} {training_id=} {rep_index=}")
     context = {
         "relation_id": relation_id,
@@ -67,10 +96,28 @@ def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, trai
         print(request.POST)
         rep_edit = request.POST.get("rep_edit")
         print(rep_edit)
-        training_exercise = get_object_or_404(TrainingExercise, id=relation_id)
-        training_exercise.reps[rep_index] = rep_edit
-        training_exercise.save()
+        """aktualizacja repsa"""
+        training_exercise = update_reps(relation_id, rep_index, rep_edit)
+        """aktualizacja historii repsa"""
+        training_exercise = update_reps_history(training_exercise)
+        messages.success(request, "Exercise save")
         return HttpResponse(rep_edit)
+        # TODO """przygotowanie histori do wyswietlenia"""
+
+
+@login_required
+def hx_training_exercise_rep_add(request: "HttpRequest", relation_id: int, training_id: int,) -> "HttpResponse":
+    training_exercise = get_object_or_404(TrainingExercise, id=relation_id, training_id=training_id)
+
+    if request.method == "POST":
+        new_rep = "kg x reps"
+        training_exercise.reps.append(new_rep)
+        training_exercise.save()
+        response = HttpResponse("")
+        response.headers["HX-Trigger"] = "reload_list" # TODO zobaczyć training_edit.html <a class="btn btn-main" hx-get="{% url 'hx-training-exercise-add' training.id %}"hx-target="#hx-training-exercise-add">Add Exercise</a>
+        return response
+
+    return HttpResponse(status=400)
 
 
 # TODO dokończ widok edycji treningu całego

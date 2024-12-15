@@ -1,0 +1,82 @@
+{% for training in event.trainings.all %}
+    <div class="card mb-4 mt-2 bg-dark">
+        <h5 class="card-header text-center bd-dark-header">Training: {{ training.name }}
+            (<small>{{ training.get_category_display }}</small>)</h5>
+        <div class="card-body">
+            {% for training_exercise in training.trainingexercise_set.all|sort_query_set:"exercise__created_at" %}
+                <div class="card mb-4 mt-2 bg-dark">
+                    <h5 class="card-header text-center bd-dark-header">Exercise: {{ training_exercise.exercise.name }}
+                        (<small>{{ training_exercise.exercise.get_category_display }}</small>)</h5>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <button class="btn btn-second"
+                                hx-post="{% url 'hx-training-exercise-rep-add' training_exercise.id training_exercise.training.id %}"
+                                hx-target="#reps-list-{{ training_exercise.id }}"
+                                hx-swap="beforeend">
+                            Add reps
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="reps-list-{{ training_exercise.id }}" class="d-flex justify-content-around">
+                            {% for rep in training_exercise.reps %}
+                                <div class="btn btn-outline-light"
+                                     hx-get="{% url 'hx-training-exercise-rep-edit' training_exercise.id training_exercise.training.id forloop.counter0 %}">
+                                    {{ rep }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="history-accordion-{{ training_exercise.id }}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                    <form method="POST"
+                                          action="{% url 'display-history' training_exercise.id event.id %}"
+                                          style="display:inline;">
+                                        {% csrf_token %}
+{#                                        TODO jak zwinąć historie, po edycji repsa sie buguje #}
+                                        <button type="submit" class="accordion-button btn-dark"
+                                                data-bs-toggle="collapse"
+                                                style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                                                data-bs-target="#details-{{ forloop.counter }}">
+                                            History
+                                            <i class="bi bi-arrow-down-circle" style="font-size: 1.5rem;"></i>
+                                        </button>
+                                    </form>
+                                </h2>
+                                {% if current_training_exercise_id == training_exercise.id %}
+                                    {% for entry in training_exercise_history %}
+                                        <div>
+                                            <button class="accordion-button btn-dark" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                                                    data-bs-target="#details-{{ forloop.counter }}">
+                                                {{ entry.date }}
+                                            </button>
+                                            <div id="details-{{ forloop.counter }}" class="collapse bg-dark">
+                                                {% for single_reps in entry.reps %}
+                                                    {% for single_rep in single_reps %}
+                                                        <li>{{ single_rep }}</li>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+
+
+<script>
+    // js do odświeżania strony
+    document.body.addEventListener('htmx:afterRequest', function (event) {
+        if (event.detail.xhr.getResponseHeader('HX-Trigger') === 'reload_list') {
+            location.reload();
+        }
+    });
+</script>

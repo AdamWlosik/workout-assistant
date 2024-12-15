@@ -1,17 +1,74 @@
 {% for training in event.trainings.all %}
-    <div class="card mb-4 mt-2">
-        <h5 class="card-header text-center">Training: {{ training.name }}
+    <div class="card mb-4 mt-2 bg-dark">
+        <h5 class="card-header text-center bd-dark-header">Training: {{ training.name }}
             (<small>{{ training.get_category_display }}</small>)</h5>
         <div class="card-body">
-            {% for training_exercise in training.trainingexercise_set.all %}
-                <div class="card mb-4 mt-2">
-                    <h5 class="card-header text-center">Exercise: {{ training_exercise.exercise.name }}
+            {% for training_exercise in training.trainingexercise_set.all|sort_query_set:"exercise__created_at" %}
+                <div class="card mb-4 mt-2 bg-dark">
+                    <h5 class="card-header text-center bd-dark-header">Exercise: {{ training_exercise.exercise.name }}
                         (<small>{{ training_exercise.exercise.get_category_display }}</small>)</h5>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <button class="btn btn-second"
+                                hx-post="{% url 'hx-training-exercise-rep-add' training_exercise.id training_exercise.training.id %}"
+                                hx-target="#reps-list-{{ training_exercise.id }}"
+                                hx-swap="beforeend">
+                            Add reps
+                        </button>
+                        <form method="POST" action="{% url 'mark-done-exercise' training_exercise.id event.id %}"
+                              style="display:inline;">
+                            {% csrf_token %}
+                            <button class="btn btn-second">
+                                Save
+                            </button>
+                        </form>
+                    </div>
                     <div class="card-body">
-                         ({{ training_exercise.reps }})
+                        <div id="reps-list-{{ training_exercise.id }}" class="d-flex justify-content-around">
+                            {% for rep in training_exercise.reps %}
+                                <div class="btn btn-outline-light"
+                                     hx-get="{% url 'hx-training-exercise-rep-edit' training_exercise.id training_exercise.training.id forloop.counter0 %}">
+                                    {{ rep }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="history-accordion-{{ training_exercise.id }}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                    <button class="accordion-button collapsed btn-dark" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false"
+                                            aria-controls="collapse{{ forloop.counter }}"
+                                            style="padding: 0.25rem 1rem; background: transparent; border: none;">
+                                        History
+                                        <i class="bi bi-arrow-down-circle"
+                                           style="font-size: 1.5rem; color: white;"></i>
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                                     aria-labelledby="heading{{ forloop.counter }}"
+                                     data-bs-parent="#history-accordion-{{ training_exercise.id }}">
+                                    <div class="accordion-body">
+                                        {{ training_exercise.history }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                </div>
             {% endfor %}
-        </div>
+    </div>
     </div>
 {% endfor %}
+
+
+<script>
+    // js do odświeżania strony
+    document.body.addEventListener('htmx:afterRequest', function (event) {
+        if (event.detail.xhr.getResponseHeader('HX-Trigger') === 'reload_list') {
+            location.reload();
+        }
+    });
+</script>
