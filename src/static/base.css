@@ -126,3 +126,27 @@ ul {
 .bd-dark-header {
     border-bottom: 1px solid #404a65;
 }
+/* Ciemne tło przycisku i kolor tekstu */
+.btn-dark {
+    background-color: rgb(42, 50, 65) !important; /* Ciemne tło */
+    color: white; /* Biały tekst */
+    border: none; /* Brak obramowania */
+}
+
+/* Kolory przycisku przy najechaniu */
+.btn-dark:hover {
+    background-color: #0c0c0c !important; /* Ciemniejszy odcień tła */
+    color: #ffffff; /* Biały kolor tekstu */
+}
+
+/* Zmiana koloru tekstu przy rozwiniętym akordeonie */
+.accordion-button:not(.collapsed) {
+    color: white; /* Zmiana koloru tekstu na biały */
+}
+
+/* Ustawienie tła akordeonu */
+.accordion-body {
+    background-color: rgb(42, 50, 65); /* Ciemne tło dla ciała akordeonu */
+    color: white; /* Biały kolor tekstu */
+    padding: 1rem;
+}
