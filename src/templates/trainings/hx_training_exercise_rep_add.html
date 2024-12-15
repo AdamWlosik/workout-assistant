@@ -1,0 +1,5 @@
+<form hx-post="{% url 'hx-training-exercise-rep-add' relation_id training_id %}"
+      hx-target="#reps-list-{{ relation_id }}"
+      hx-swap="afterend">
+    {% csrf_token %}
+</form>
