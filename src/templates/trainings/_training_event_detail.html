@@ -4,6 +4,7 @@
             (<small>{{ training.get_category_display }}</small>)</h5>
         <div class="card-body">
             {% for training_exercise in training.trainingexercise_set.all|sort_query_set:"exercise__created_at" %}
+                {#                {{ training_exercise.history }}#}
                 <div class="card mb-4 mt-2 bg-dark">
                     <h5 class="card-header text-center bd-dark-header">Exercise: {{ training_exercise.exercise.name }}
                         (<small>{{ training_exercise.exercise.get_category_display }}</small>)</h5>
@@ -14,54 +15,66 @@
                                 hx-swap="beforeend">
                             Add reps
                         </button>
+
+                        <form method="POST" action="{% url 'display-history' training_exercise.id event.id %}"
+                              style="margin-left: auto;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-second">
+                                Save
+                            </button>
+                        </form>
                     </div>
                     <div class="card-body">
                         <div id="reps-list-{{ training_exercise.id }}" class="d-flex justify-content-around">
                             {% for rep in training_exercise.reps %}
                                 <div class="btn btn-outline-light"
-                                     hx-get="{% url 'hx-training-exercise-rep-edit' training_exercise.id training_exercise.training.id forloop.counter0 %}">
+                                     hx-get="{% url 'hx-training-exercise-rep-edit' event.id training_exercise.id training_exercise.training.id forloop.counter0 %}">
                                     {{ rep }}
                                 </div>
                             {% endfor %}
                         </div>
                     </div>
                     <div class="card-body">
+{#                        {{ training_exercise_history }}#}
+{#                        {{ training_exercise_history.exercise_id }}#}
                         <div class="accordion" id="history-accordion-{{ training_exercise.id }}">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                                    <form method="POST"
-                                          action="{% url 'display-history' training_exercise.id event.id %}"
-                                          style="display:inline;">
-                                        {% csrf_token %}
-{#                                        TODO jak zwinąć historie, po edycji repsa sie buguje #}
-                                        <button type="submit" class="accordion-button btn-dark"
-                                                data-bs-toggle="collapse"
-                                                style="padding: 0.25rem 1rem; background: transparent; border: none;"
-                                                data-bs-target="#details-{{ forloop.counter }}">
-                                            History
-                                            <i class="bi bi-arrow-down-circle" style="font-size: 1.5rem;"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="accordion-button btn-dark"
+                                            data-bs-toggle="collapse"
+                                            style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                                            data-bs-target="#details-{{ training_exercise.id }}">
+                                        History
+                                        <i class="bi bi-arrow-down-circle" style="font-size: 1.5rem;"></i>
+                                    </button>
                                 </h2>
-                                {% if current_training_exercise_id == training_exercise.id %}
+                                <div id="details-{{ training_exercise.id }}" class="collapse bg-dark">
                                     {% for entry in training_exercise_history %}
-                                        <div>
-                                            <button class="accordion-button btn-dark" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    style="padding: 0.25rem 1rem; background: transparent; border: none;"
-                                                    data-bs-target="#details-{{ forloop.counter }}">
-                                                {{ entry.date }}
-                                            </button>
-                                            <div id="details-{{ forloop.counter }}" class="collapse bg-dark">
-                                                {% for single_reps in entry.reps %}
-                                                    {% for single_rep in single_reps %}
+                                        {% if  entry.exercise_id ==  training_exercise.id %}
+{#                                            entry {{ entry }}#}
+                                            {% for entry_entry in entry.history %}
+{#                                                entry_entry {{ entry_entry }}#}
+                                        <div class="accordion-item">
+                                            <h3 class="accordion-header">
+                                                <button type="button" class="accordion-button btn-dark"
+                                                        data-bs-toggle="collapse"
+                                                        style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                                                        data-bs-target="#entry-details-{{ forloop.counter }}">
+                                                    {{ entry_entry.date }}
+                                                </button>
+                                            </h3>
+                                            <div id="entry-details-{{ forloop.counter }}" class="collapse bg-dark">
+                                                <ul>
+                                                    {% for single_rep in entry_entry.reps %}
                                                         <li>{{ single_rep }}</li>
                                                     {% endfor %}
-                                                {% endfor %}
+                                                </ul>
                                             </div>
                                         </div>
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endfor %}
-                                {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>

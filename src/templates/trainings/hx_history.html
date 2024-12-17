@@ -1,0 +1,42 @@
+<div class="accordion" id="history-accordion-{{ training_exercise.id }}">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+            <form method="POST"
+                  action="{% url 'display-history' training_exercise.id event.id %}"
+                  style="display:inline;">
+                {% csrf_token %}
+                {#                                        TODO jak zwinąć historie, po edycji repsa sie buguje #}
+                <button type="submit" class="accordion-button btn-dark"
+                        data-bs-toggle="collapse"
+                        style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                        data-bs-target="#details-{{ forloop.counter }}">
+                    History
+                    <i class="bi bi-arrow-down-circle" style="font-size: 1.5rem;"></i>
+                </button>
+            </form>
+        </h2>
+        {% if current_training_exercise_id == training_exercise.id %}
+            {% for entry in training_exercise_history %}
+                <div>
+                    <button class="accordion-button btn-dark" type="button"
+                            data-bs-toggle="collapse"
+                            style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                            data-bs-target="#details-{{ forloop.counter }}">
+                        {{ entry.date }}
+                    </button>
+                    <div id="details-{{ forloop.counter }}" class="collapse bg-dark">
+                        {% for single_reps in entry.reps %}
+                            {% for single_rep in single_reps %}
+                                <li>{{ single_rep }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{#<div id="history-container-{{ training_exercise.id }}" hx-swap="innerHTML">#}
+{#    {% include "trainings/hx_history.html" with training_exercise_history=training_exercise_history current_training_exercise_id=training_exercise.id %}#}
+{#</div>#}
