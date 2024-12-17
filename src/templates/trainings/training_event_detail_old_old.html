@@ -14,10 +14,10 @@
                                 hx-swap="beforeend">
                             Add reps
                         </button>
-                        <form method="POST" action="{% url 'mark-done-exercise' training_exercise.id event.id %}"
-                              style="display:inline;">
+                        <form method="POST" action="{% url 'display-history' training_exercise.id event.id %}"
+                              style="margin-left: auto;">
                             {% csrf_token %}
-                            <button class="btn btn-second">
+                            <button type="submit" class="btn btn-second">
                                 Save
                             </button>
                         </form>
@@ -40,8 +40,11 @@
                                           action="{% url 'display-history' training_exercise.id event.id %}"
                                           style="display:inline;">
                                         {% csrf_token %}
+                                        TODO jak zwinąć historie, po edycji repsa sie buguje 
                                         <button type="submit" class="accordion-button btn-dark"
-                                                style="padding: 0.25rem 1rem; background: transparent; border: none;">
+                                                data-bs-toggle="collapse"
+                                                style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                                                data-bs-target="#details-{{ forloop.counter }}">
                                             History
                                             <i class="bi bi-arrow-down-circle" style="font-size: 1.5rem;"></i>
                                         </button>

@@ -15,6 +15,7 @@ class Category(models.Model):
 class Training(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
+    is_copy = models.BooleanField(default=False)
     name = models.CharField(max_length=100)
     description = models.TextField(default="", blank=True)
     # TODO tutaj sortowanie

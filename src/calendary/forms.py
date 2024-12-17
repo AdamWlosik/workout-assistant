@@ -7,7 +7,7 @@ from .models import Event
 class EventForm(forms.ModelForm):
     def __init__(self, *args, user=None, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.fields["trainings"].queryset = Training.objects.filter(user=user)
+        self.fields["trainings"].queryset = Training.objects.filter(user=user, is_copy=False)
 
     class Meta:
         model = Event
