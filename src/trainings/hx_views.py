@@ -29,13 +29,16 @@ def hx_training_exercise_add(request: "HttpRequest", training_id: int) -> "HttpR
 
     if request.method == "POST":
         exercises_id = request.POST.get("exercise")
-        reps = request.POST.get("reps")
-        reps_list = ast.literal_eval(reps.strip())
+        reps_proposed = request.POST.get("reps_proposed")
+        # reps_list = ast.literal_eval(reps_proposed.strip())
+        reps_list = ast.literal_eval(reps_proposed.strip()) if reps_proposed else []
         exercise = get_object_or_404(Exercise, id=exercises_id, user=request.user)
-        relation = TrainingExercise(exercise=exercise, training=training, reps=reps_list, user=request.user)
+        relation = TrainingExercise(exercise=exercise, training=training, reps_proposed=reps_list, reps=[], user=request.user)
         relation.save()
+        print(relation.reps_proposed)
         # return render(request, "trainings/hx_training_exercise_list.html", {"training": training})
         response = HttpResponse("")
+
         response.headers["HX-Trigger"] = "reload_list"
         return response
     else:

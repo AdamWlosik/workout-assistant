@@ -19,7 +19,7 @@ class TrainingExerciseForm(forms.ModelForm):
 
     class Meta:
         model = TrainingExercise
-        fields = ["exercise", "reps"]
+        fields = ["exercise", "reps", "reps_proposed"]
         widgets = {
             # "reps": forms.TextInput(attrs={"placeholder": "e.g., 10kg x 12"}),
             # my_field = JSONFormField(schema=schema)

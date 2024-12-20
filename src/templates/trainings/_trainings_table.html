@@ -4,7 +4,10 @@
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Category</th>
-        <th scope="col">Exercises</th>
+        <th scope="col">
+            Exercises<br>
+            <span style="font-size: smaller; font-weight: normal;">(Edit training to add exercise)</span>
+        </th>
         <th scope="col">Action</th>
     </tr>
     </thead>
@@ -17,7 +20,7 @@
             </td>
             <td>
                 {% for category in training.category.all %}
-                    <span>{{  category }},</span>
+                    <span>{{ category }},</span>
                     {% if forloop.counter|divisibleby:"4" and not forloop.last %}
                         <br>
                     {% endif %}
