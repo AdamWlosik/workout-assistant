@@ -14,10 +14,11 @@
                                 hx-swap="beforeend">
                             Add reps
                         </button>
-                        <form method="POST" action="{% url 'mark-done-exercise' training_exercise.id event.id %}"
-                              style="display:inline;">
+
+                        <form method="POST" action="{% url 'display-history' training_exercise.id event.id %}"
+                              style="margin-left: auto;">
                             {% csrf_token %}
-                            <button class="btn btn-second">
+                            <button type="submit" class="btn btn-second">
                                 Save
                             </button>
                         </form>
@@ -36,30 +37,45 @@
                         <div class="accordion" id="history-accordion-{{ training_exercise.id }}">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                                    <button class="accordion-button collapsed btn-dark" type="button"
+                                    <button type="button" class="accordion-button btn-dark"
                                             data-bs-toggle="collapse"
-                                            data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false"
-                                            aria-controls="collapse{{ forloop.counter }}"
-                                            style="padding: 0.25rem 1rem; background: transparent; border: none;">
+                                            style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                                            data-bs-target="#details-{{ training_exercise.id }}">
                                         History
-                                        <i class="bi bi-arrow-down-circle"
-                                           style="font-size: 1.5rem; color: white;"></i>
+                                        <i class="bi bi-arrow-down-circle" style="font-size: 1.5rem;"></i>
                                     </button>
                                 </h2>
-                                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse"
-                                     aria-labelledby="heading{{ forloop.counter }}"
-                                     data-bs-parent="#history-accordion-{{ training_exercise.id }}">
-                                    <div class="accordion-body">
-                                        {{ training_exercise.history }}
-                                    </div>
+                                <div id="details-{{ training_exercise.id }}" class="collapse bg-dark">
+                                    {% if current_training_exercise_id == training_exercise.id %}
+                                        {% for entry in training_exercise_history %}
+                                            <div class="accordion-item">
+                                                <h3 class="accordion-header">
+                                                    <button type="button" class="accordion-button btn-dark"
+                                                            data-bs-toggle="collapse"
+                                                            style="padding: 0.25rem 1rem; background: transparent; border: none;"
+                                                            data-bs-target="#entry-details-{{ forloop.counter }}">
+                                                        {{ entry.date }}
+                                                    </button>
+                                                </h3>
+                                                <div id="entry-details-{{ forloop.counter }}" class="collapse bg-dark">
+                                                    <ul>
+                                                        {% for single_reps in entry.reps %}
+                                                            {% for single_rep in single_reps %}
+                                                                <li>{{ single_rep }}</li>
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
             {% endfor %}
-    </div>
+        </div>
     </div>
 {% endfor %}
 

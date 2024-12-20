@@ -5,7 +5,7 @@ from pprint import pprint
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
 from calendary.models import Event
@@ -29,13 +29,16 @@ def hx_training_exercise_add(request: "HttpRequest", training_id: int) -> "HttpR
 
     if request.method == "POST":
         exercises_id = request.POST.get("exercise")
-        reps = request.POST.get("reps")
-        reps_list = ast.literal_eval(reps.strip())
+        reps_proposed = request.POST.get("reps_proposed")
+        # reps_list = ast.literal_eval(reps_proposed.strip())
+        reps_list = ast.literal_eval(reps_proposed.strip()) if reps_proposed else []
         exercise = get_object_or_404(Exercise, id=exercises_id, user=request.user)
-        relation = TrainingExercise(exercise=exercise, training=training, reps=reps_list, user=request.user)
+        relation = TrainingExercise(exercise=exercise, training=training, reps_proposed=reps_list, reps=[], user=request.user)
         relation.save()
+        print(relation.reps_proposed)
         # return render(request, "trainings/hx_training_exercise_list.html", {"training": training})
         response = HttpResponse("")
+
         response.headers["HX-Trigger"] = "reload_list"
         return response
     else:
@@ -82,13 +85,15 @@ def hx_training_exercise_delete(request: "HttpRequest", relation_id: int, traini
 
 @login_required
 def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, training_id: int,
-                                  rep_index: int) -> "HttpResponse":
+                                  rep_index: int, event_id: int) -> "HttpResponse":
     """Edycja repsa """
     print(f"{relation_id=} {training_id=} {rep_index=}")
+    event = get_object_or_404(Event, id=event_id)
     context = {
         "relation_id": relation_id,
         "training_id": training_id,
         "rep_index": rep_index,
+        "event": event,
     }
     if request.method == "GET":
         return render(request, "trainings/hx_training_exercise_rep_edit.html", context=context)
@@ -99,7 +104,7 @@ def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, trai
         """aktualizacja repsa"""
         training_exercise = update_reps(relation_id, rep_index, rep_edit)
         """aktualizacja historii repsa"""
-        training_exercise = update_reps_history(training_exercise)
+        training_exercise = update_reps_history(training_exercise, event)
         messages.success(request, "Exercise save")
         return HttpResponse(rep_edit)
         # TODO """przygotowanie histori do wyswietlenia"""

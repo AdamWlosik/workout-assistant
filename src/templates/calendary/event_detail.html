@@ -9,6 +9,7 @@
     {% endfor %}
 
     <a class="btn btn-main" href="{% url 'event_edit' event.id %}">Edit</a>
+    <a class="btn btn-main" href="{% url 'event_delete' event.id %}">Delete</a>
     <a class="btn btn-main" href="{% url 'calendary_view' %}">Back to list</a>
     <form method="POST" action="{% url 'mark_done' event.id %}" style="display:inline;">
         {% csrf_token %}

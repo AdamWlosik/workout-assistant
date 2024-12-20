@@ -1,5 +1,5 @@
 {% for relation in training_exercises %}
-    <li class="white-font" > {{ relation.exercise.name }} - Reps: {{ relation.reps }} Relation id: {{ relation.id }}
+    <li class="white-font" > {{ relation.exercise.name }} - Reps: {{ relation.reps_proposed }} Relation id: {{ relation.id }}
         <button class="btn btn-second" hx-post="{% url 'hx-training-exercise-delete' relation.id relation.training.id %}">Delete</button>
         <button class="btn btn-second" hx-post="{% url 'hx-training-exercise-edit' relation.id relation.training.id %}">Edit</button>
     </li>

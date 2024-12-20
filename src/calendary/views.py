@@ -9,6 +9,8 @@ from django.utils.timezone import now
 from django.http import HttpResponse
 
 from calendary.forms import EventForm
+from trainings.models import TrainingExercise, Training
+from trainings.services import display_history_method
 
 from .models import Event
 
@@ -64,6 +66,25 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
             event.user = request.user
             event.save()
             form.save_m2m()
+            trainings_copy = []
+            for training in event.trainings.prefetch_related('trainingexercise_set'):
+                new_training = Training(
+                    user=training.user,
+                    is_active=training.is_active,
+                    is_copy=True,
+                    name=training.name,
+                    description=training.description,
+                )
+                new_training.save()
+                for m2m in training.trainingexercise_set.all():
+                    TrainingExercise.objects.create(training=new_training, exercise=m2m.exercise, reps=[],
+                                                    user=m2m.user, history=m2m.history, reps_proposed=m2m.reps_proposed)
+                new_training.category.set(training.category.all())
+                # for training_exercise in new_training.trainingexercise_set.all():
+                #     training_exercise.reps = []
+                #     training_exercise.save()
+                trainings_copy.append(new_training)
+            event.trainings.set(trainings_copy)
             return redirect("calendary_view")
     else:
         initial_data = {}
@@ -79,8 +100,22 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
 def event_detail(request: "HttpRequest", event_id: int) -> "HttpResponse":
     """Function tu display the details of a selected training"""
     event = get_object_or_404(Event, id=event_id, user=request.user)
+    trainings = event.trainings.prefetch_related('trainingexercise_set')
+    training_exercises = []
+    for training in trainings:
+        training_exercises.extend(training.trainingexercise_set.all())
+    training_exercise_id = [training_exercise.id for training_exercise in training_exercises]
+    display_history = []
+    for training_exercise in training_exercises:
+        display_history.append({"exercise_id": training_exercise.id, "history":
+            display_history_method(training_exercise)})
     # TODO """przygotowanie histori do wyswietlenia"""
-    return render(request, "calendary/event_detail.html", {"event": event})
+    print("display_history event_detail", display_history)
+    return render(request, "calendary/event_detail.html", {
+        "event": event,
+        "training_exercise_history": display_history,
+        "current_training_exercise_id": training_exercise_id,
+    })
 
 
 @login_required
@@ -112,3 +147,12 @@ def mark_done(request: "HttpRequest", event_id: int) -> "HttpResponse":
         event.save()
 
     return redirect("event_detail", event_id=event_id)
+
+
+@login_required
+def event_delete(request: "HttpRequest", event_id: int) -> "HttpResponse":
+    event = get_object_or_404(Event, id=event_id, user=request.user)
+    if request.method == "POST":
+        event.delete()
+        return redirect("calendary_view")
+    return render(request, "calendary/event_confirm_delete.html", {"event": event})

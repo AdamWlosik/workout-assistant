@@ -15,6 +15,7 @@ class Category(models.Model):
 class Training(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
+    is_copy = models.BooleanField(default=False)
     name = models.CharField(max_length=100)
     description = models.TextField(default="", blank=True)
     # TODO tutaj sortowanie
@@ -41,6 +42,7 @@ class TrainingExercise(models.Model):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     reps = ArrayField(models.CharField(max_length=50, blank=True, verbose_name=_("Reps (e.g., '10kg x 12')")))
+    reps_proposed = ArrayField(models.CharField(max_length=50, blank=True, verbose_name=_("Reps (e.g., '10kg x 12')")))
     history = models.TextField(default="[]", blank=True)
 
     def __str__(self) -> str:

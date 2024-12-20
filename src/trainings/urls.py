@@ -29,7 +29,7 @@ urlpatterns += [
         name="hx-training-exercise-edit",
     ),
     path(
-        "<int:relation_id>/<int:training_id>/rep/<int:rep_index>",
+        "<int:event_id>/<int:relation_id>/<int:training_id>/rep/<int:rep_index>/",
         hx_views.hx_training_exercise_rep_edit,
         name="hx-training-exercise-rep-edit",
     ),
@@ -37,12 +37,4 @@ urlpatterns += [
         "hx-training-exercise-rep-add/<int:relation_id>/<int:training_id>/",
         hx_views.hx_training_exercise_rep_add,
         name="hx-training-exercise-rep-add"),
-    # path(
-    #     "mark-done-exercise/<int:training_exercise_id>/<int:event_id>/",
-    #     views.mark_done_exercise,
-    #     name="mark-done-exercise"),
-    path(
-        "display-history/<int:training_exercise_id>/<int:event_id>/",
-        views.display_history,
-        name="display-history"),
 ]

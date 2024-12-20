@@ -150,3 +150,8 @@ ul {
     color: white; /* Biały kolor tekstu */
     padding: 1rem;
 }
+
+.rep-proposed-item {
+    display: block;
+    margin-bottom: 10px;
+}
