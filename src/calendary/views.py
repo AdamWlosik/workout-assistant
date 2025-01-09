@@ -74,11 +74,11 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
                     is_copy=True,
                     name=training.name,
                     description=training.description,
-                                        )
+                )
                 new_training.save()
                 for m2m in training.trainingexercise_set.all():
                     TrainingExercise.objects.create(training=new_training, exercise=m2m.exercise, reps=[],
-                                                    user=m2m.user, history=m2m.history)
+                                                    user=m2m.user, history=m2m.history, reps_proposed=m2m.reps_proposed)
                 new_training.category.set(training.category.all())
                 # for training_exercise in new_training.trainingexercise_set.all():
                 #     training_exercise.reps = []
@@ -147,3 +147,12 @@ def mark_done(request: "HttpRequest", event_id: int) -> "HttpResponse":
         event.save()
 
     return redirect("event_detail", event_id=event_id)
+
+
+@login_required
+def event_delete(request: "HttpRequest", event_id: int) -> "HttpResponse":
+    event = get_object_or_404(Event, id=event_id, user=request.user)
+    if request.method == "POST":
+        event.delete()
+        return redirect("calendary_view")
+    return render(request, "calendary/event_confirm_delete.html", {"event": event})
