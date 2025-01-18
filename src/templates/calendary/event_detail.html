@@ -36,6 +36,7 @@
             <button id="stop-button" class="btn btn-danger" style="display:none;">Stop</button>
             <button id="resume-button" class="btn btn-warning" style="display:none;">Resume</button>
             <button id="reset-button" class="btn btn-secondary" style="display:none;">Reset</button>
+            <button id="mute-button" class="btn btn-secondary">Mute</button>
         </div>
     </div>
 
@@ -49,34 +50,42 @@
     </audio>
 
     <script>
-        let timerInterval; // Zmienna przechowująca identyfikator interwału timera
-        let remainingTime; // Zmienna przechowująca pozostały czas
+        let timerInterval; // Przechowuje identyfikator interwału timera
+        let remainingTime; // Przechowuje pozostały czas do końca odliczania
+        let isMuted = false; // Kontroluje, czy dźwięk jest wyciszony
 
-        const alertSound = document.getElementById('alert-sound');
+        const alertSound = document.getElementById('alert-sound'); // Referencja do elementu audio
+        const muteButton = document.getElementById('mute-button'); // Referencja do przycisku wyciszenia
 
-        // Obsługa zdarzenia kliknięcia na przycisk 'Start'
+        // Obsługa przycisku 'Mute/Unmute' - zmienia stan wyciszenia dźwięku
+        muteButton.addEventListener('click', function () {
+            isMuted = !isMuted;
+            muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+        });
+
+        // Rozpoczęcie odliczania po kliknięciu 'Start'
         document.getElementById('start-button').addEventListener('click', function () {
-            let minutes = parseInt(document.getElementById('minutes').value) || 0; // Pobranie minut
-            let seconds = parseInt(document.getElementById('seconds').value) || 0; // Pobranie sekund
+            let minutes = parseInt(document.getElementById('minutes').value) || 0;
+            let seconds = parseInt(document.getElementById('seconds').value) || 0;
 
-            remainingTime = (minutes * 60) + seconds; // Obliczenie całkowitego czasu
-            startTimer(remainingTime); // Rozpoczęcie odliczania
+            remainingTime = (minutes * 60) + seconds;
+            startTimer(remainingTime);
 
             document.getElementById('start-button').style.display = 'none';
             document.getElementById('stop-button').style.display = 'inline-block';
             document.getElementById('reset-button').style.display = 'inline-block';
         });
 
-        // Obsługa zdarzenia kliknięcia na przycisk 'Stop'
+        // Zatrzymanie timera po kliknięciu 'Stop'
         document.getElementById('stop-button').addEventListener('click', function () {
-            clearInterval(timerInterval); // Zatrzymanie odliczania
+            clearInterval(timerInterval);
             document.getElementById('stop-button').style.display = 'none';
             document.getElementById('resume-button').style.display = 'inline-block';
         });
 
-        // Obsługa zdarzenia kliknięcia na przycisk 'Resume'
+        // Wznowienie timera po kliknięciu 'Resume'
         document.getElementById('resume-button').addEventListener('click', function () {
-            startTimer(remainingTime); // Wznowienie odliczania
+            startTimer(remainingTime);
             document.getElementById('resume-button').style.display = 'none';
             document.getElementById('stop-button').style.display = 'inline-block';
         });
@@ -92,35 +101,37 @@
             document.getElementById('reset-button').style.display = 'none';
         });
 
-        // Funkcja do rozpoczęcia odliczania
+        // Funkcja rozpoczynająca odliczanie i odtwarzająca dźwięk po zakończeniu
         function startTimer(duration) {
-            let timer = duration;
+            let timer = duration; // Ustawienie timera na podaną wartość
             timerInterval = setInterval(function () {
-                let minutes = Math.floor(timer / 60); // Obliczenie minut
-                let seconds = timer % 60; // Obliczenie sekund
+                let minutes = Math.floor(timer / 60); // Obliczenie pozostałych minut
+                let seconds = timer % 60; // Obliczenie pozostałych sekund
 
+                // Wyświetlenie czasu w formacie mm:ss
                 document.getElementById('time').textContent =
                     (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    alertSound.play().catch(function (error) {
-                        console.error("Audio playback error:", error);
-                    });
+                if (--timer < 0) { // Sprawdzenie, czy czas się skończył
+                    clearInterval(timerInterval);  // Zatrzymanie odliczania
+                    if (!isMuted) {
+                        alertSound.play().catch(function (error) {
+                            console.error("Audio playback error:", error);
+                        });
+                    }
                     setTimeout(function () {
-                        alert("Time's up!");
+                        alert("Time's up!"); // Wyświetlenie komunikatu po zakończeniu
                         alertSound.pause();
                         alertSound.currentTime = 0;
                     }, 100);
-
+                    // Przywrócenie przycisku "Start" oraz ukrycie innych przycisków
                     document.getElementById('start-button').style.display = 'inline-block';
                     document.getElementById('stop-button').style.display = 'none';
-                    document.getElementById('resume-button').style.display = 'none';
                     document.getElementById('reset-button').style.display = 'none';
                 } else {
-                    remainingTime = timer;
+                    remainingTime = timer; // Aktualizacja pozostałego czasu
                 }
-            }, 1000);
+            }, 1000); // Ustawienie interwału na 1000 ms (1 sekunda)
         }
     </script>
 {% endblock %}
