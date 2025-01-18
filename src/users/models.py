@@ -52,7 +52,7 @@ class Profile(models.Model):
     def bmi(self) -> float | None:
         """Method for calculating BMI"""
         if self.weight and self.height:
-            return self.weight / (self.height / 100) ** 2
+            return round(self.weight / (self.height / 100) ** 2, 2)
         return None
 
 

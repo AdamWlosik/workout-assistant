@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 @login_required
 def trainings_list(request: "HttpRequest") -> "HttpResponse":
-    trainings = Training.objects.filter(user=request.user)
+    trainings = Training.objects.filter(user=request.user, is_copy=False)
     return render(request, "trainings/trainings_list.html", {"trainings": trainings})
 
 

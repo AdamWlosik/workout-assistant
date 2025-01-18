@@ -40,23 +40,28 @@
     </div>
 
     {% include "trainings/_training_event_detail.html" %}
+    {% load static %}
 
-    {# JavaScript #}
+    {# Dźwięk alarmu po zakończeniu odliczania #}
+    <audio id="alert-sound">
+        <source src="{% static 'sounds/alert-sounds.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <script>
         let timerInterval; // Zmienna przechowująca identyfikator interwału timera
         let remainingTime; // Zmienna przechowująca pozostały czas
 
+        const alertSound = document.getElementById('alert-sound');
+
         // Obsługa zdarzenia kliknięcia na przycisk 'Start'
         document.getElementById('start-button').addEventListener('click', function () {
-            // Odczytanie wartości minut i sekund z formularza
-            let minutes = parseInt(document.getElementById('minutes').value);
-            let seconds = parseInt(document.getElementById('seconds').value);
+            let minutes = parseInt(document.getElementById('minutes').value) || 0; // Pobranie minut
+            let seconds = parseInt(document.getElementById('seconds').value) || 0; // Pobranie sekund
 
-            // Obliczenie całkowitego czasu w sekundach
-            remainingTime = (minutes * 60) + seconds;
+            remainingTime = (minutes * 60) + seconds; // Obliczenie całkowitego czasu
             startTimer(remainingTime); // Rozpoczęcie odliczania
 
-            // Ukrycie przycisku 'Start' i wyświetlenie przycisków 'Stop' oraz 'Reset'
             document.getElementById('start-button').style.display = 'none';
             document.getElementById('stop-button').style.display = 'inline-block';
             document.getElementById('reset-button').style.display = 'inline-block';
@@ -65,23 +70,22 @@
         // Obsługa zdarzenia kliknięcia na przycisk 'Stop'
         document.getElementById('stop-button').addEventListener('click', function () {
             clearInterval(timerInterval); // Zatrzymanie odliczania
-            document.getElementById('stop-button').style.display = 'none'; // Ukrycie przycisku 'Stop'
-            document.getElementById('resume-button').style.display = 'inline-block'; // Wyświetlenie przycisku 'Resume'
+            document.getElementById('stop-button').style.display = 'none';
+            document.getElementById('resume-button').style.display = 'inline-block';
         });
 
         // Obsługa zdarzenia kliknięcia na przycisk 'Resume'
         document.getElementById('resume-button').addEventListener('click', function () {
-            startTimer(remainingTime); // Wznawianie odliczania od pozostałego czasu
-            document.getElementById('resume-button').style.display = 'none'; // Ukrycie przycisku 'Resume'
-            document.getElementById('stop-button').style.display = 'inline-block'; // Wyświetlenie przycisku 'Stop'
+            startTimer(remainingTime); // Wznowienie odliczania
+            document.getElementById('resume-button').style.display = 'none';
+            document.getElementById('stop-button').style.display = 'inline-block';
         });
 
         // Obsługa zdarzenia kliknięcia na przycisk 'Reset'
         document.getElementById('reset-button').addEventListener('click', function () {
             clearInterval(timerInterval); // Zatrzymanie odliczania
-            remainingTime = 0; // Ustawienie pozostałego czasu na 0
-            document.getElementById('time').textContent = '00:00'; // Zresetowanie wyświetlanego czasu
-            // Przywrócenie widoczności przycisku 'Start' i ukrycie innych przycisków
+            remainingTime = 0; // Resetowanie czasu
+            document.getElementById('time').textContent = '00:00'; // Aktualizacja wyświetlacza
             document.getElementById('start-button').style.display = 'inline-block';
             document.getElementById('stop-button').style.display = 'none';
             document.getElementById('resume-button').style.display = 'none';
@@ -90,26 +94,33 @@
 
         // Funkcja do rozpoczęcia odliczania
         function startTimer(duration) {
-            let timer = duration; // Ustawienie timera na podaną wartość
+            let timer = duration;
             timerInterval = setInterval(function () {
-                let minutes = Math.floor(timer / 60); // Obliczenie pozostałych minut
-                let seconds = timer % 60; // Obliczenie pozostałych sekund
+                let minutes = Math.floor(timer / 60); // Obliczenie minut
+                let seconds = timer % 60; // Obliczenie sekund
 
-                // Wyświetlenie czasu w formacie mm:ss
                 document.getElementById('time').textContent =
                     (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 
-                if (--timer < 0) { // Sprawdzenie, czy czas się skończył
-                    clearInterval(timerInterval); // Zatrzymanie odliczania
-                    alert("Time's up!"); // Wyświetlenie komunikatu po zakończeniu
-                    // Przywrócenie przycisku "Start" oraz ukrycie innych przycisków
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    alertSound.play().catch(function (error) {
+                        console.error("Audio playback error:", error);
+                    });
+                    setTimeout(function () {
+                        alert("Time's up!");
+                        alertSound.pause();
+                        alertSound.currentTime = 0;
+                    }, 100);
+
                     document.getElementById('start-button').style.display = 'inline-block';
                     document.getElementById('stop-button').style.display = 'none';
+                    document.getElementById('resume-button').style.display = 'none';
                     document.getElementById('reset-button').style.display = 'none';
                 } else {
-                    remainingTime = timer; // Aktualizacja pozostałego czasu
+                    remainingTime = timer;
                 }
-            }, 1000); // Ustawienie interwału na 1000 ms (1 sekunda)
+            }, 1000);
         }
     </script>
 {% endblock %}
