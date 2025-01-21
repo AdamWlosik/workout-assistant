@@ -1,8 +1,5 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
-
 from calendary.models import Event
+from django.views.generic import TemplateView
 
 
 class HomePageView(TemplateView):

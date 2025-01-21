@@ -4,8 +4,8 @@ from crispy_forms.layout import Div, Field, Layout
 from django import forms
 from django.forms import inlineformset_factory
 from django_jsonform.forms.fields import ArrayFormField
-
 from exercises.models import Exercise
+
 from trainings.models import Category, Training, TrainingExercise
 
 
@@ -15,7 +15,6 @@ class TrainingExerciseForm(forms.ModelForm):
         self.fields["exercise"].queryset = Exercise.objects.filter(user=user)
 
     reps = ArrayFormField(forms.CharField)  # TODO Bartek sprawdź
-
 
     class Meta:
         model = TrainingExercise

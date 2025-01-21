@@ -1,9 +1,7 @@
 import json
-from datetime import datetime, timedelta
 
 from django.shortcuts import get_object_or_404
 
-from calendary.models import Event
 from trainings.models import TrainingExercise
 
 
@@ -53,6 +51,7 @@ def update_reps(relation_id, rep_index, rep_edit):
 #     training_exercise.save()
 #     return training_exercise
 
+
 def update_reps_history(training_exercise, event):
     print("Running history reps update", training_exercise.reps)
     reps = training_exercise.reps
@@ -80,11 +79,5 @@ def update_reps_history(training_exercise, event):
 def display_history_method(training_exercise):
     history = json.loads(training_exercise.history)
 
-    display_history = [
-        {
-            "date": entry["date"],
-            "reps": entry["reps"]
-        }
-        for entry in history[-4:]
-    ]
+    display_history = [{"date": entry["date"], "reps": entry["reps"]} for entry in history[-4:]]
     return display_history
