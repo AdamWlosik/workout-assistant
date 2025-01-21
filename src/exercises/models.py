@@ -19,6 +19,7 @@ class Exercise(models.Model):
         WARM_UP = "11", _("Warm Up")
         CARDIO = "12", _("Cardio")
         CORE = "13", _("Core")
+        OTHER = "14", _("Other")
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
