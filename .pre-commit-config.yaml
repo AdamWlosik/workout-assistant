@@ -3,5 +3,5 @@ repos:
     rev: v0.4.6
     hooks:
       - id: ruff
-      - args: [ --fix ] # automatyczne poprawki
+        args: [ --fix ] # automatyczne poprawki
       - id: ruff-format
