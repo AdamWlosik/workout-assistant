@@ -12,7 +12,6 @@ class Event(models.Model):
     date = models.DateField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     trainings = models.ManyToManyField(Training, verbose_name=_("Training"), blank=True, related_name="events")
-    poprawka = 1
 
     def __str__(self) -> str:
         return self.title
