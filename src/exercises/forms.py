@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Div
+from crispy_forms.layout import Div, Field, Layout
 from django import forms
 
 from exercises.models import Exercise

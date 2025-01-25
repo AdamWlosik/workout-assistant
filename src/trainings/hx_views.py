@@ -1,19 +1,16 @@
 import ast
-import json
-from datetime import datetime, timedelta
 from pprint import pprint
 
+from calendary.models import Event
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpRequest, JsonResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
-
-from calendary.models import Event
 from exercises.models import Exercise
 
 from trainings.forms import TrainingExerciseForm
 from trainings.models import Training, TrainingExercise
-from trainings.services import update_reps_history, update_reps
+from trainings.services import update_reps, update_reps_history
 
 
 @login_required
@@ -33,7 +30,9 @@ def hx_training_exercise_add(request: "HttpRequest", training_id: int) -> "HttpR
         # reps_list = ast.literal_eval(reps_proposed.strip())
         reps_list = ast.literal_eval(reps_proposed.strip()) if reps_proposed else []
         exercise = get_object_or_404(Exercise, id=exercises_id, user=request.user)
-        relation = TrainingExercise(exercise=exercise, training=training, reps_proposed=reps_list, reps=[], user=request.user)
+        relation = TrainingExercise(
+            exercise=exercise, training=training, reps_proposed=reps_list, reps=[], user=request.user
+        )
         relation.save()
         print(relation.reps_proposed)
         # return render(request, "trainings/hx_training_exercise_list.html", {"training": training})
@@ -83,10 +82,12 @@ def hx_training_exercise_delete(request: "HttpRequest", relation_id: int, traini
 #         print(training_exercise.reps)
 #         return HttpResponse(rep_edit)
 
+
 @login_required
-def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, training_id: int,
-                                  rep_index: int, event_id: int) -> "HttpResponse":
-    """Edycja repsa """
+def hx_training_exercise_rep_edit(
+    request: "HttpRequest", relation_id: int, training_id: int, rep_index: int, event_id: int
+) -> "HttpResponse":
+    """Edycja repsa"""
     print(f"{relation_id=} {training_id=} {rep_index=}")
     event = get_object_or_404(Event, id=event_id)
     context = {
@@ -111,7 +112,11 @@ def hx_training_exercise_rep_edit(request: "HttpRequest", relation_id: int, trai
 
 
 @login_required
-def hx_training_exercise_rep_add(request: "HttpRequest", relation_id: int, training_id: int,) -> "HttpResponse":
+def hx_training_exercise_rep_add(
+    request: "HttpRequest",
+    relation_id: int,
+    training_id: int,
+) -> "HttpResponse":
     training_exercise = get_object_or_404(TrainingExercise, id=relation_id, training_id=training_id)
 
     if request.method == "POST":
@@ -119,7 +124,9 @@ def hx_training_exercise_rep_add(request: "HttpRequest", relation_id: int, train
         training_exercise.reps.append(new_rep)
         training_exercise.save()
         response = HttpResponse("")
-        response.headers["HX-Trigger"] = "reload_list" # TODO zobaczyć training_edit.html <a class="btn btn-main" hx-get="{% url 'hx-training-exercise-add' training.id %}"hx-target="#hx-training-exercise-add">Add Exercise</a>
+        response.headers["HX-Trigger"] = (
+            "reload_list"  # TODO zobaczyć training_edit.html <a class="btn btn-main" hx-get="{% url 'hx-training-exercise-add' training.id %}"hx-target="#hx-training-exercise-add">Add Exercise</a>
+        )
         return response
 
     return HttpResponse(status=400)

@@ -1,6 +1,6 @@
 from django import forms
-
 from trainings.models import Training
+
 from .models import Event
 
 
