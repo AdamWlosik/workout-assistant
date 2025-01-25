@@ -4,13 +4,13 @@ from typing import TYPE_CHECKING
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
-from django.http import HttpResponse
+from trainings.models import Training, TrainingExercise
+from trainings.services import display_history_method
 
 from calendary.forms import EventForm
-from trainings.models import TrainingExercise, Training
-from trainings.services import display_history_method
 
 from .models import Event
 
@@ -33,8 +33,9 @@ def calendar_view(request: "HttpRequest") -> "HttpResponse":
 
     events = []
     for week in month_days:
-        week_events = [(day, Event.objects.filter(date__year=year, date__month=month, user=request.user)) for day in
-                       week]
+        week_events = [
+            (day, Event.objects.filter(date__year=year, date__month=month, user=request.user)) for day in week
+        ]
         events.append(week_events)
     # TODO (przyszła optymalizacja) day jako datetime object
 
@@ -67,7 +68,7 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
             event.save()
             form.save_m2m()
             trainings_copy = []
-            for training in event.trainings.prefetch_related('trainingexercise_set'):
+            for training in event.trainings.prefetch_related("trainingexercise_set"):
                 new_training = Training(
                     user=training.user,
                     is_active=training.is_active,
@@ -77,8 +78,14 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
                 )
                 new_training.save()
                 for m2m in training.trainingexercise_set.all():
-                    TrainingExercise.objects.create(training=new_training, exercise=m2m.exercise, reps=[],
-                                                    user=m2m.user, history=m2m.history, reps_proposed=m2m.reps_proposed)
+                    TrainingExercise.objects.create(
+                        training=new_training,
+                        exercise=m2m.exercise,
+                        reps=[],
+                        user=m2m.user,
+                        history=m2m.history,
+                        reps_proposed=m2m.reps_proposed,
+                    )
                 new_training.category.set(training.category.all())
                 # for training_exercise in new_training.trainingexercise_set.all():
                 #     training_exercise.reps = []
@@ -100,22 +107,27 @@ def add_event(request: "HttpRequest") -> "HttpResponse":
 def event_detail(request: "HttpRequest", event_id: int) -> "HttpResponse":
     """Function tu display the details of a selected training"""
     event = get_object_or_404(Event, id=event_id, user=request.user)
-    trainings = event.trainings.prefetch_related('trainingexercise_set')
+    trainings = event.trainings.prefetch_related("trainingexercise_set")
     training_exercises = []
     for training in trainings:
         training_exercises.extend(training.trainingexercise_set.all())
     training_exercise_id = [training_exercise.id for training_exercise in training_exercises]
     display_history = []
     for training_exercise in training_exercises:
-        display_history.append({"exercise_id": training_exercise.id, "history":
-            display_history_method(training_exercise)})
+        display_history.append(
+            {"exercise_id": training_exercise.id, "history": display_history_method(training_exercise)}
+        )
     # TODO """przygotowanie histori do wyswietlenia"""
     print("display_history event_detail", display_history)
-    return render(request, "calendary/event_detail.html", {
-        "event": event,
-        "training_exercise_history": display_history,
-        "current_training_exercise_id": training_exercise_id,
-    })
+    return render(
+        request,
+        "calendary/event_detail.html",
+        {
+            "event": event,
+            "training_exercise_history": display_history,
+            "current_training_exercise_id": training_exercise_id,
+        },
+    )
 
 
 @login_required

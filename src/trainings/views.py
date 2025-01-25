@@ -1,15 +1,10 @@
-import json
-from datetime import datetime, timedelta
-from time import sleep
-from typing import TYPE_CHECKING, List, Dict
+from typing import TYPE_CHECKING
 
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from calendary.models import Event
 from .forms import TrainingExerciseFormSet, TrainingForm
-from .models import Training, TrainingExercise
+from .models import Training
 
 if TYPE_CHECKING:
     from django.http import HttpRequest, HttpResponse
